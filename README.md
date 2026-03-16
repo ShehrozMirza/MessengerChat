@@ -274,6 +274,157 @@ robinsnest/
 
 ---
 
+## Architecture Diagrams
+
+### Request Flow
+
+How a browser request flows through the app:
+
+```mermaid
+flowchart TD
+    Browser["Browser Request"]
+
+    Browser --> index["index.php<br/><small>Home / Dashboard</small>"]
+    Browser --> auth["auth/"]
+    Browser --> pages["pages/"]
+    Browser --> ajax["ajax/"]
+    Browser --> admin["admin/"]
+
+    auth --> login["login.php"]
+    auth --> signup["signup.php"]
+    auth --> logout["logout.php"]
+    auth --> forgot["forgot_password.php"]
+    auth --> reset["reset_password.php"]
+
+    pages --> messages["messages.php"]
+    pages --> members["members.php"]
+    pages --> friends["friends.php"]
+    pages --> profile["profile.php"]
+
+    ajax --> checkuser["checkuser.php"]
+
+    admin --> setup["setup.php"]
+
+    index --> header["includes/header.php"]
+    login --> header
+    signup --> header
+    logout --> header
+    messages --> header
+    members --> header
+    friends --> header
+    profile --> header
+    forgot --> header
+    reset --> header
+
+    header --> config["config.php<br/><small>ROOT_DIR, BASE_URL</small>"]
+    header --> functions["includes/functions.php<br/><small>PDO, helpers</small>"]
+
+    checkuser --> config
+    checkuser --> functions
+    setup --> config
+    setup --> functions
+
+    functions --> DB[("MySQL<br/>robinsnest")]
+
+    style config fill:#fef3c7,stroke:#d97706,color:#000
+    style functions fill:#dbeafe,stroke:#3b82f6,color:#000
+    style header fill:#dbeafe,stroke:#3b82f6,color:#000
+    style DB fill:#d1fae5,stroke:#059669,color:#000
+```
+
+### Database Schema
+
+```mermaid
+erDiagram
+    members {
+        VARCHAR16 user PK
+        VARCHAR255 pass
+        VARCHAR255 email
+    }
+
+    messages {
+        INT id PK
+        VARCHAR16 auth FK
+        VARCHAR16 recip FK
+        CHAR1 pm
+        INT time
+        VARCHAR4096 message
+        VARCHAR255 image
+        VARCHAR255 audio
+    }
+
+    friends {
+        VARCHAR16 user FK
+        VARCHAR16 friend FK
+    }
+
+    profiles {
+        VARCHAR16 user FK
+        VARCHAR4096 text
+    }
+
+    password_resets {
+        INT id PK
+        VARCHAR16 user FK
+        VARCHAR64 token
+        INT expires
+    }
+
+    members ||--o{ messages : "sends (auth)"
+    members ||--o{ messages : "receives (recip)"
+    members ||--o{ friends : "follows (user)"
+    members ||--o{ friends : "followed by (friend)"
+    members ||--o| profiles : "has"
+    members ||--o{ password_resets : "requests"
+```
+
+### Page Navigation Map
+
+How users navigate between pages:
+
+```mermaid
+flowchart LR
+    Home["Home<br/>index.php"]
+    Login["Login<br/>auth/login.php"]
+    Signup["Signup<br/>auth/signup.php"]
+    Forgot["Forgot Password<br/>auth/forgot_password.php"]
+    Reset["Reset Password<br/>auth/reset_password.php"]
+    Messages["Messages<br/>pages/messages.php"]
+    Members["Members<br/>pages/members.php"]
+    Friends["Friends<br/>pages/friends.php"]
+    Profile["Profile<br/>pages/profile.php"]
+    Logout["Logout<br/>auth/logout.php"]
+
+    Home <-->|tab| Messages
+    Home <-->|tab| Members
+    Home <-->|tab| Friends
+    Home <-->|tab| Profile
+    Home -->|tab| Logout
+
+    Login <--> Signup
+    Login <--> Forgot
+    Forgot --> Reset
+    Login --> Home
+    Signup --> Home
+    Logout --> Home
+
+    Members --> Messages
+    Friends --> Members
+
+    style Home fill:#4f46e5,color:#fff
+    style Messages fill:#7c3aed,color:#fff
+    style Members fill:#7c3aed,color:#fff
+    style Friends fill:#7c3aed,color:#fff
+    style Profile fill:#7c3aed,color:#fff
+    style Login fill:#059669,color:#fff
+    style Signup fill:#059669,color:#fff
+    style Logout fill:#ef4444,color:#fff
+    style Forgot fill:#d97706,color:#fff
+    style Reset fill:#d97706,color:#fff
+```
+
+---
+
 ## How It Works
 
 ### Messaging
