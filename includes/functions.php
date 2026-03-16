@@ -48,8 +48,8 @@ function sanitizeString($var)
 function showProfile($user)
 {
     global $pdo;
-    if (file_exists("uploads/$user.jpg"))
-        echo "<img src='uploads/" . rawurlencode($user) . ".jpg' class='profile-img rounded-circle mb-3' alt='" .
+    if (file_exists(ROOT_DIR . "/uploads/$user.jpg"))
+        echo "<img src='" . BASE_URL . "/uploads/" . rawurlencode($user) . ".jpg' class='profile-img rounded-circle mb-3' alt='" .
              htmlspecialchars($user, ENT_QUOTES, 'UTF-8') . "'>";
 
     $stmt = $pdo->prepare("SELECT text FROM profiles WHERE user=?");

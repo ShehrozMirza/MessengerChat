@@ -1,5 +1,5 @@
 <?php
-require_once 'header.php';
+require_once __DIR__ . '/../includes/header.php';
 
 if (!$loggedin) {
     echo '</main></body></html>';
@@ -15,7 +15,7 @@ if (isset($_POST['text']) || isset($_FILES['image']) || isset($_FILES['audio']))
     $imgFile = null;
     $audFile = null;
 
-    $uploadDir = 'uploads/messages/';
+    $uploadDir = ROOT_DIR . '/uploads/messages/';
     $uid = uniqid('', true);
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -42,14 +42,14 @@ if (isset($_POST['text']) || isset($_FILES['image']) || isset($_FILES['audio']))
         echo 'ok';
         exit;
     }
-    header("Location: messages.php?view=" . urlencode($view) . "&pm=$pm&r=$randstr");
+    header("Location: " . BASE_URL . "/pages/messages.php?view=" . urlencode($view) . "&pm=$pm&r=$randstr");
     exit;
 }
 
 if (isset($_GET['erase'])) {
     $erase = (int)$_GET['erase'];
     queryMysql("DELETE FROM messages WHERE id=? AND recip=?", [$erase, $user]);
-    header("Location: messages.php?view=" . urlencode($view) . "&r=$randstr");
+    header("Location: " . BASE_URL . "/pages/messages.php?view=" . urlencode($view) . "&r=$randstr");
     exit;
 }
 
@@ -57,7 +57,7 @@ if ($view === $user) {
     $name1 = $name2 = 'Your';
 } else {
     $viewSafe = htmlspecialchars($view, ENT_QUOTES, 'UTF-8');
-    $name1 = '<a href="members.php?view=' . urlencode($view) . '&r=' . $randstr . '">' . $viewSafe . '</a>\'s';
+    $name1 = '<a href="' . BASE_URL . '/pages/members.php?view=' . urlencode($view) . '&r=' . $randstr . '">' . $viewSafe . '</a>\'s';
     $name2 = "$viewSafe's";
 }
 
@@ -80,14 +80,14 @@ date_default_timezone_set('UTC');
                 Leave a Message for <?= $viewSafe ?>
 <?php endif; ?>
             </h5>
-            <form method="post" enctype="multipart/form-data" action="messages.php?view=<?= urlencode($sendTo ?? $view) ?>&r=<?= $randstr ?>" id="msgForm">
+            <form method="post" enctype="multipart/form-data" action="<?= BASE_URL ?>/pages/messages.php?view=<?= urlencode($sendTo ?? $view) ?>&r=<?= $randstr ?>" id="msgForm">
 <?php if ($view === $user):
     $memberList = queryMysql("SELECT user FROM members WHERE user!=? ORDER BY user", [$user])->fetchAll();
     if ($memberList):
 ?>
                 <div class="mb-3">
                     <label for="sendTo" class="form-label fw-semibold">To</label>
-                    <select class="form-select" id="sendTo" onchange="document.getElementById('msgForm').action='messages.php?view='+encodeURIComponent(this.value)+'&r=<?= $randstr ?>'">
+                    <select class="form-select" id="sendTo" onchange="document.getElementById('msgForm').action='<?= BASE_URL ?>/pages/messages.php?view='+encodeURIComponent(this.value)+'&r=<?= $randstr ?>'">
                         <option value="" disabled selected>Select a recipient...</option>
 <?php foreach ($memberList as $m): ?>
                         <option value="<?= htmlspecialchars($m['user'], ENT_QUOTES, 'UTF-8') ?>">
@@ -191,13 +191,13 @@ if ($shown > 0):
 <?php endif; ?>
 <?php if (!empty($row['image'])): ?>
             <div class="msg-image">
-                <img src="uploads/messages/<?= htmlspecialchars($row['image'], ENT_QUOTES, 'UTF-8') ?>" alt="image" loading="lazy">
+                <img src="<?= BASE_URL ?>/uploads/messages/<?= htmlspecialchars($row['image'], ENT_QUOTES, 'UTF-8') ?>" alt="image" loading="lazy">
             </div>
 <?php endif; ?>
 <?php if (!empty($row['audio'])): ?>
             <div class="msg-audio">
                 <audio controls preload="none">
-                    <source src="uploads/messages/<?= htmlspecialchars($row['audio'], ENT_QUOTES, 'UTF-8') ?>" type="audio/webm">
+                    <source src="<?= BASE_URL ?>/uploads/messages/<?= htmlspecialchars($row['audio'], ENT_QUOTES, 'UTF-8') ?>" type="audio/webm">
                 </audio>
             </div>
 <?php endif; ?>
@@ -210,7 +210,7 @@ if ($shown > 0):
                 <i class="bi bi-check2-all bubble-check"></i>
 <?php endif; ?>
 <?php if ($row['recip'] === $user): ?>
-                <a href="messages.php?view=<?= urlencode($view) ?>&erase=<?= (int)$row['id'] ?>&r=<?= $randstr ?>"
+                <a href="<?= BASE_URL ?>/pages/messages.php?view=<?= urlencode($view) ?>&erase=<?= (int)$row['id'] ?>&r=<?= $randstr ?>"
                    class="bubble-delete" title="Delete"><i class="bi bi-trash"></i></a>
 <?php endif; ?>
             </div>
@@ -234,6 +234,7 @@ if ($shown === 0):
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     (function(){
+        var baseUrl = '<?= BASE_URL ?>';
         var mediaRecorder = null;
         var audioChunks = [];
         var recording = false;
@@ -246,7 +247,7 @@ if ($shown === 0):
         function refreshMessages(){
             var pm = document.querySelector('input[name="pm"]:checked');
             var pmVal = pm ? pm.value : '0';
-            var viewUrl = "messages.php?view=<?= urlencode($view) ?>&pm=" + pmVal + "&r=" + Date.now().toString(36);
+            var viewUrl = baseUrl + "/pages/messages.php?view=<?= urlencode($view) ?>&pm=" + pmVal + "&r=" + Date.now().toString(36);
             var atBottom = chatWin.scrollTop + chatWin.clientHeight >= chatWin.scrollHeight - 50;
             fetch(viewUrl)
                 .then(function(r){ return r.text(); })
@@ -335,7 +336,7 @@ if ($shown === 0):
                     var match = actionUrl.match(/view=([^&]*)/);
                     var recipient = match ? decodeURIComponent(match[1]) : '';
                     if (recipient && recipient !== '<?= addslashes($user) ?>') {
-                        window.location.href = 'messages.php?view=' + encodeURIComponent(recipient) + '&pm=' + pmVal + '&r=' + Date.now().toString(36);
+                        window.location.href = baseUrl + '/pages/messages.php?view=' + encodeURIComponent(recipient) + '&pm=' + pmVal + '&r=' + Date.now().toString(36);
                     } else {
                         form.querySelector('textarea[name="text"]').value = '';
                         removeImage();

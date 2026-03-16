@@ -1,5 +1,5 @@
 <?php
-require_once 'header.php';
+require_once __DIR__ . '/../includes/header.php';
 $error = $user_input = '';
 
 if (isset($_POST['user'])) {
@@ -25,7 +25,7 @@ if (isset($_POST['user'])) {
 
             if ($valid) {
                 $_SESSION['user'] = $row['user'];
-                header("Location: index.php?r=$randstr");
+                header("Location: " . BASE_URL . "/index.php?r=$randstr");
                 exit;
             }
         }
@@ -47,7 +47,7 @@ if (isset($_POST['user'])) {
                     <i class="bi bi-exclamation-triangle"></i> <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
                 </div>
 <?php endif; ?>
-                <form method="post" action="login.php?r=<?= $randstr ?>">
+                <form method="post" action="<?= BASE_URL ?>/auth/login.php?r=<?= $randstr ?>">
                     <div class="mb-3">
                         <label for="user" class="form-label fw-semibold">Username</label>
                         <input type="text" class="form-control" id="user" name="user"
@@ -63,13 +63,13 @@ if (isset($_POST['user'])) {
                     </button>
                 </form>
                 <div class="text-center mt-3">
-                    <a href="forgot_password.php?r=<?= $randstr ?>" class="small text-muted">
+                    <a href="<?= BASE_URL ?>/auth/forgot_password.php?r=<?= $randstr ?>" class="small text-muted">
                         <i class="bi bi-key"></i> Forgot your password?
                     </a>
                 </div>
                 <p class="text-center mt-2 mb-0 small">
                     Don't have an account?
-                    <a href="signup.php?r=<?= $randstr ?>" class="fw-semibold">Sign Up</a>
+                    <a href="<?= BASE_URL ?>/auth/signup.php?r=<?= $randstr ?>" class="fw-semibold">Sign Up</a>
                 </p>
             </div>
         </div>

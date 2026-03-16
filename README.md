@@ -95,7 +95,7 @@ chmod 755 uploads uploads/messages
 
 ### 5. Configure Database Credentials
 
-Open `functions.php` and verify these settings match your MySQL setup:
+Open `includes/functions.php` and verify these settings match your MySQL setup:
 
 ```php
 $db_host = 'localhost';     // Database host
@@ -115,7 +115,7 @@ Open **phpMyAdmin** at http://localhost/phpmyadmin and go to the **SQL** tab (or
 > - **phpMyAdmin:** Open http://localhost/phpmyadmin → click **Import** tab → choose `database.sql` → click **Go**
 > - **CLI (run from the project folder):** `mysql -u root -p < database.sql`
 >
-> Or, if the database and user already exist (steps 6.1–6.3), visit http://localhost/robinsnest/setup.php to create just the tables from the browser.
+> Or, if the database and user already exist (steps 6.1–6.3), visit http://localhost/robinsnest/admin/setup.php to create just the tables from the browser.
 
 #### 6.1 — Create the database
 
@@ -206,7 +206,17 @@ CREATE TABLE IF NOT EXISTS password_resets (
 
 > After running all queries you should see five tables in the `robinsnest` database: `members`, `messages`, `friends`, `profiles`, `password_resets`.
 
-### 7. Launch the App
+### 7. Configure Base URL (if not using default path)
+
+If your project is NOT at `http://localhost/robinsnest/`, edit `config.php` and change the `BASE_URL` constant:
+
+```php
+define('BASE_URL', '/robinsnest');  // Change to match your path
+```
+
+For example, if you deploy to `http://localhost/messenger/`, set it to `'/messenger'`.
+
+### 8. Launch the App
 
 Open your browser and go to:
 
@@ -224,24 +234,40 @@ Sign up for an account and start messaging!
 
 ```
 robinsnest/
-├── index.php                (Home / dashboard)
-├── header.php               (Shared header, tab bar, logout modal)
-├── functions.php            (Database connection & helper functions)
-├── styles.css               (Custom CSS — chat bubbles, tabs, cards)
-├── setup.php                (Database setup & cleanup tools)
-├── login.php                (Login page)
-├── signup.php               (Registration with success dialog)
-├── logout.php               (Logout handler)
-├── messages.php             (Chat with image/voice/AJAX support)
-├── members.php              (Member list with follow/unfollow dialogs)
-├── friends.php              (Friends — mutual, followers, following)
-├── profile.php              (Profile editor & image upload)
-├── checkuser.php            (AJAX username availability check)
-├── forgot_password.php      (Password reset request)
-├── reset_password.php       (Password reset form)
-├── database.sql             (Full SQL setup script)
-├── uploads/                 (Profile images — created in Step 4)
-│   └── messages/            (Chat image & voice attachments)
+├── config.php                       (Base path constants)
+├── index.php                        (Home / dashboard)
+│
+├── includes/
+│   ├── header.php                   (Shared header, tab bar, logout modal)
+│   └── functions.php                (Database connection & helper functions)
+│
+├── auth/
+│   ├── login.php                    (Login page)
+│   ├── signup.php                   (Registration with success dialog)
+│   ├── logout.php                   (Logout handler)
+│   ├── forgot_password.php          (Password reset request)
+│   └── reset_password.php           (Password reset form)
+│
+├── pages/
+│   ├── messages.php                 (Chat with image/voice/AJAX support)
+│   ├── members.php                  (Member list with follow/unfollow dialogs)
+│   ├── friends.php                  (Friends — mutual, followers, following)
+│   └── profile.php                  (Profile editor & image upload)
+│
+├── ajax/
+│   └── checkuser.php                (AJAX username availability check)
+│
+├── admin/
+│   └── setup.php                    (Database setup & cleanup tools)
+│
+├── assets/
+│   └── css/
+│       └── styles.css               (Custom CSS — chat bubbles, tabs, cards)
+│
+├── uploads/                         (Profile images — created in Step 4)
+│   └── messages/                    (Chat image & voice attachments)
+│
+├── database.sql                     (Full SQL setup script)
 ├── .gitignore
 └── README.md
 ```
@@ -272,7 +298,7 @@ robinsnest/
 
 ## Database Cleanup
 
-Visit http://localhost/robinsnest/setup.php for cleanup buttons:
+Visit http://localhost/robinsnest/admin/setup.php for cleanup buttons:
 
 | Button | What it does |
 |--------|-------------|
@@ -303,11 +329,12 @@ DELETE FROM members;
 | Problem | Solution |
 |---------|----------|
 | **"Call to undefined function imagecreatefromjpeg()"** | Enable the GD extension (see Step 2) |
-| **Login says "Invalid password" after setup** | Run `setup.php` to upgrade the `pass` column to VARCHAR(255) for bcrypt |
+| **Login says "Invalid password" after setup** | Visit `admin/setup.php` to upgrade the `pass` column to VARCHAR(255) for bcrypt |
 | **Profile images not showing** | Make sure the `uploads/` folder exists and is writable |
 | **Voice recording not working** | Use HTTPS or localhost (microphone requires secure context). Allow mic permission in browser. |
 | **CSS not updating after changes** | Hard refresh with Ctrl+Shift+R (CSS is cache-busted automatically via `?v=` timestamp) |
-| **Database connection error** | Verify credentials in `functions.php` match your MySQL user (see Step 5) |
+| **Database connection error** | Verify credentials in `includes/functions.php` match your MySQL user (see Step 5) |
+| **Links broken after moving to different path** | Update `BASE_URL` in `config.php` to match your deployment path (see Step 7) |
 
 ---
 

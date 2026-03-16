@@ -1,5 +1,5 @@
 <?php
-require_once 'header.php';
+require_once __DIR__ . '/includes/header.php';
 date_default_timezone_set('UTC');
 ?>
 <?php if ($loggedin): ?>
@@ -9,7 +9,7 @@ date_default_timezone_set('UTC');
                 <div class="card-header d-flex align-items-center px-4 py-3">
                     <i class="bi bi-chat-left-text text-primary me-2"></i>
                     <h6 class="mb-0 fw-semibold">Recent Messages</h6>
-                    <a href="messages.php?r=<?= $randstr ?>" class="ms-auto small text-decoration-none">View all</a>
+                    <a href="<?= BASE_URL ?>/pages/messages.php?r=<?= $randstr ?>" class="ms-auto small text-decoration-none">View all</a>
                 </div>
 <?php
     $lastMsg = queryMysql(
@@ -27,14 +27,14 @@ date_default_timezone_set('UTC');
     $initial   = strtoupper($msg['auth'][0]);
 ?>
                     <div class="list-group-item d-flex align-items-start gap-3 px-4 py-3">
-<?php if (file_exists('uploads/' . $msg['auth'] . '.jpg')): ?>
-                        <img src="uploads/<?= rawurlencode($msg['auth']) ?>.jpg" class="member-avatar-img" alt="<?= $authSafe ?>">
+<?php if (file_exists(ROOT_DIR . '/uploads/' . $msg['auth'] . '.jpg')): ?>
+                        <img src="<?= BASE_URL ?>/uploads/<?= rawurlencode($msg['auth']) ?>.jpg" class="member-avatar-img" alt="<?= $authSafe ?>">
 <?php else: ?>
                         <div class="member-avatar"><?= $initial ?></div>
 <?php endif; ?>
                         <div class="flex-grow-1" style="min-width:0">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <a href="messages.php?view=<?= urlencode($msg['auth']) ?>&r=<?= $randstr ?>"
+                                <a href="<?= BASE_URL ?>/pages/messages.php?view=<?= urlencode($msg['auth']) ?>&r=<?= $randstr ?>"
                                    class="fw-semibold text-decoration-none small"><?= $authSafe ?></a>
                                 <span class="text-muted" style="font-size:.75rem"><?= date('M j, g:ia', $msg['time']) ?></span>
                             </div>
@@ -60,8 +60,8 @@ date_default_timezone_set('UTC');
         <div class="col-lg-4">
             <div class="card mb-4">
                 <div class="card-body text-center p-4">
-<?php if (file_exists('uploads/' . $user . '.jpg')): ?>
-                    <img src="uploads/<?= rawurlencode($user) ?>.jpg" class="rounded-circle mb-3" width="72" height="72"
+<?php if (file_exists(ROOT_DIR . '/uploads/' . $user . '.jpg')): ?>
+                    <img src="<?= BASE_URL ?>/uploads/<?= rawurlencode($user) ?>.jpg" class="rounded-circle mb-3" width="72" height="72"
                          style="object-fit:cover;border:3px solid var(--primary-light)" alt="<?= $userstr ?>">
 <?php else: ?>
                     <div class="member-avatar mx-auto mb-3" style="width:72px;height:72px;min-width:72px;font-size:1.8rem">
@@ -77,20 +77,20 @@ date_default_timezone_set('UTC');
                         <div><strong class="text-body"><?= $friendCount['c'] ?></strong><br>Friends</div>
                         <div><strong class="text-body"><?= $msgCount['c'] ?></strong><br>Messages</div>
                     </div>
-                    <a href="profile.php?r=<?= $randstr ?>" class="btn btn-outline-primary btn-sm mt-3">
+                    <a href="<?= BASE_URL ?>/pages/profile.php?r=<?= $randstr ?>" class="btn btn-outline-primary btn-sm mt-3">
                         <i class="bi bi-pencil-square"></i> Edit Profile
                     </a>
                 </div>
             </div>
 
             <div class="d-grid gap-2">
-                <a href="members.php?r=<?= $randstr ?>" class="btn btn-primary">
+                <a href="<?= BASE_URL ?>/pages/members.php?r=<?= $randstr ?>" class="btn btn-primary">
                     <i class="bi bi-people"></i> Members
                 </a>
-                <a href="friends.php?r=<?= $randstr ?>" class="btn btn-outline-primary">
+                <a href="<?= BASE_URL ?>/pages/friends.php?r=<?= $randstr ?>" class="btn btn-outline-primary">
                     <i class="bi bi-heart"></i> Friends
                 </a>
-                <a href="messages.php?r=<?= $randstr ?>" class="btn btn-outline-primary">
+                <a href="<?= BASE_URL ?>/pages/messages.php?r=<?= $randstr ?>" class="btn btn-outline-primary">
                     <i class="bi bi-envelope"></i> Messages
                 </a>
             </div>
@@ -100,10 +100,10 @@ date_default_timezone_set('UTC');
     <div class="hero-section">
         <h1><i class="bi bi-lightning-charge-fill" style="color:#f59e0b"></i> FastMessenger</h1>
         <p>Lightning-fast messaging, real connections. Join our community today!</p>
-        <a href="signup.php?r=<?= $randstr ?>" class="btn btn-accent btn-lg me-2">
+        <a href="<?= BASE_URL ?>/auth/signup.php?r=<?= $randstr ?>" class="btn btn-accent btn-lg me-2">
             <i class="bi bi-person-plus"></i> Sign Up
         </a>
-        <a href="login.php?r=<?= $randstr ?>" class="btn btn-light btn-lg">
+        <a href="<?= BASE_URL ?>/auth/login.php?r=<?= $randstr ?>" class="btn btn-light btn-lg">
             <i class="bi bi-box-arrow-in-right"></i> Log In
         </a>
     </div>

@@ -1,5 +1,5 @@
 <?php
-require_once 'header.php';
+require_once __DIR__ . '/../includes/header.php';
 
 if (!$loggedin) {
     echo '</main></body></html>';
@@ -16,7 +16,7 @@ if (isset($_GET['view'])) {
             <?php showProfile($view); ?>
         </div>
     </div>
-    <a href="messages.php?view=<?= urlencode($view) ?>&r=<?= $randstr ?>" class="btn btn-primary">
+    <a href="<?= BASE_URL ?>/pages/messages.php?view=<?= urlencode($view) ?>&r=<?= $randstr ?>" class="btn btn-primary">
         <i class="bi bi-envelope"></i> View <?= $name ?> Messages
     </a>
 <?php
@@ -58,13 +58,13 @@ $result = queryMysql("SELECT user FROM members ORDER BY user");
     $t2 = $s2->rowCount();
 ?>
     <div class="member-card">
-<?php if (file_exists('uploads/' . $row['user'] . '.jpg')): ?>
-        <img src="uploads/<?= rawurlencode($row['user']) ?>.jpg" class="member-avatar-img" alt="<?= $member ?>">
+<?php if (file_exists(ROOT_DIR . '/uploads/' . $row['user'] . '.jpg')): ?>
+        <img src="<?= BASE_URL ?>/uploads/<?= rawurlencode($row['user']) ?>.jpg" class="member-avatar-img" alt="<?= $member ?>">
 <?php else: ?>
         <div class="member-avatar"><?= $initial ?></div>
 <?php endif; ?>
         <div class="flex-grow-1">
-            <a href="members.php?view=<?= urlencode($row['user']) ?>&r=<?= $randstr ?>"
+            <a href="<?= BASE_URL ?>/pages/members.php?view=<?= urlencode($row['user']) ?>&r=<?= $randstr ?>"
                class="fw-semibold text-decoration-none"><?= $member ?></a>
 <?php if (($t1 + $t2) > 1): ?>
             <span class="badge bg-primary ms-2">Mutual Friend</span>
@@ -76,13 +76,13 @@ $result = queryMysql("SELECT user FROM members ORDER BY user");
         </div>
         <div>
 <?php if (!$t1): ?>
-            <a href="members.php?add=<?= urlencode($row['user']) ?>&r=<?= $randstr ?>"
+            <a href="<?= BASE_URL ?>/pages/members.php?add=<?= urlencode($row['user']) ?>&r=<?= $randstr ?>"
                class="btn btn-sm btn-outline-primary">
                 <i class="bi bi-person-plus"></i> <?= $t2 ? 'Follow Back' : 'Follow' ?>
             </a>
 <?php else: ?>
             <button type="button" class="btn btn-sm btn-outline-danger"
-                    onclick="confirmUnfollow('<?= htmlspecialchars($row['user'], ENT_QUOTES, 'UTF-8') ?>', 'members.php?remove=<?= urlencode($row['user']) ?>&r=<?= $randstr ?>')">
+                    onclick="confirmUnfollow('<?= htmlspecialchars($row['user'], ENT_QUOTES, 'UTF-8') ?>', '<?= BASE_URL ?>/pages/members.php?remove=<?= urlencode($row['user']) ?>&r=<?= $randstr ?>')">
                 <i class="bi bi-person-dash"></i> Unfollow
             </button>
 <?php endif; ?>

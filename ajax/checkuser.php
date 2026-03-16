@@ -1,5 +1,6 @@
 <?php
-require_once 'functions.php';
+require_once __DIR__ . '/../config.php';
+require_once ROOT_DIR . '/includes/functions.php';
 
 if (isset($_POST['user'])) {
     $user = sanitizeString($_POST['user']);

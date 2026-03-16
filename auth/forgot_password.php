@@ -1,5 +1,5 @@
 <?php
-require_once 'header.php';
+require_once __DIR__ . '/../includes/header.php';
 $error = $success = $user_input = '';
 
 if (isset($_POST['user'])) {
@@ -19,7 +19,7 @@ if (isset($_POST['user'])) {
             queryMysql("INSERT INTO password_resets (user, token, expires) VALUES(?, ?, ?)",
                 [$user_input, $token, $expires]);
 
-            $resetLink = "reset_password.php?token=$token";
+            $resetLink = BASE_URL . "/auth/reset_password.php?token=$token";
             $success   = $resetLink;
         } else {
             $error = 'No account found with that username.';
@@ -50,7 +50,7 @@ if (isset($_POST['user'])) {
                     <p class="small text-muted mt-2 mb-0">This link expires in 1 hour.</p>
                 </div>
 <?php else: ?>
-                <form method="post" action="forgot_password.php?r=<?= $randstr ?>">
+                <form method="post" action="<?= BASE_URL ?>/auth/forgot_password.php?r=<?= $randstr ?>">
                     <div class="mb-3">
                         <label for="user" class="form-label fw-semibold">Username</label>
                         <input type="text" class="form-control" id="user" name="user"
@@ -63,7 +63,7 @@ if (isset($_POST['user'])) {
 <?php endif; ?>
                 <p class="text-center mt-3 mb-0 small">
                     Remember your password?
-                    <a href="login.php?r=<?= $randstr ?>" class="fw-semibold">Log In</a>
+                    <a href="<?= BASE_URL ?>/auth/login.php?r=<?= $randstr ?>" class="fw-semibold">Log In</a>
                 </p>
             </div>
         </div>

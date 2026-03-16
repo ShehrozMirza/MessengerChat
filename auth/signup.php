@@ -1,5 +1,5 @@
 <?php
-require_once 'header.php';
+require_once __DIR__ . '/../includes/header.php';
 $error = $user_input = '';
 
 if (isset($_SESSION['user'])) destroySession();
@@ -38,7 +38,7 @@ if (isset($_POST['user'])) {
                     <i class="bi bi-exclamation-triangle"></i> <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
                 </div>
 <?php endif; ?>
-                <form method="post" action="signup.php?r=<?= $randstr ?>">
+                <form method="post" action="<?= BASE_URL ?>/auth/signup.php?r=<?= $randstr ?>">
                     <div class="mb-3">
                         <label for="user" class="form-label fw-semibold">Username</label>
                         <input type="text" class="form-control" id="user" name="user"
@@ -57,7 +57,7 @@ if (isset($_POST['user'])) {
                 </form>
                 <p class="text-center mt-3 mb-0 small">
                     Already have an account?
-                    <a href="login.php?r=<?= $randstr ?>" class="fw-semibold">Log In</a>
+                    <a href="<?= BASE_URL ?>/auth/login.php?r=<?= $randstr ?>" class="fw-semibold">Log In</a>
                 </p>
             </div>
         </div>
@@ -71,7 +71,7 @@ if (isset($_POST['user'])) {
                     </div>
                     <h5 class="fw-bold">Welcome to FastMessenger!</h5>
                     <p class="text-muted small">Your account has been created successfully.</p>
-                    <a href="index.php?r=<?= $randstr ?>" class="btn btn-primary w-100 py-2">
+                    <a href="<?= BASE_URL ?>/index.php?r=<?= $randstr ?>" class="btn btn-primary w-100 py-2">
                         <i class="bi bi-house-door"></i> Go to Home
                     </a>
                 </div>
@@ -85,7 +85,7 @@ if (isset($_POST['user'])) {
         const el = document.getElementById('used');
         if (username.trim() === '') { el.innerHTML = ''; return; }
         checkTimer = setTimeout(() => {
-            fetch('checkuser.php', {
+            fetch('<?= BASE_URL ?>/ajax/checkuser.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'user=' + encodeURIComponent(username)

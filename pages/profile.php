@@ -1,5 +1,5 @@
 <?php
-require_once 'header.php';
+require_once __DIR__ . '/../includes/header.php';
 
 if (!$loggedin) {
     echo '</main></body></html>';
@@ -37,7 +37,7 @@ if (isset($_FILES['image']['name']) && $_FILES['image']['name'] !== '') {
         $message = 'Invalid image type. Please use GIF, JPEG, or PNG.';
         $msgType = 'danger';
     } else {
-        $saveto = "uploads/$user.jpg";
+        $saveto = ROOT_DIR . "/uploads/$user.jpg";
 
         if (move_uploaded_file($_FILES['image']['tmp_name'], $saveto)) {
             $src = null;
@@ -101,7 +101,7 @@ if (isset($_FILES['image']['name']) && $_FILES['image']['name'] !== '') {
             <div class="card">
                 <div class="card-body p-4">
                     <h5 class="mb-3 fw-semibold">Edit Profile</h5>
-                    <form method="post" action="profile.php?r=<?= $randstr ?>" enctype="multipart/form-data">
+                    <form method="post" action="<?= BASE_URL ?>/pages/profile.php?r=<?= $randstr ?>" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="text" class="form-label">About You</label>
                             <textarea class="form-control" id="text" name="text" rows="4"><?= htmlspecialchars($text, ENT_QUOTES, 'UTF-8') ?></textarea>

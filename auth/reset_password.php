@@ -1,5 +1,5 @@
 <?php
-require_once 'header.php';
+require_once __DIR__ . '/../includes/header.php';
 $error = $success = '';
 $token = $_GET['token'] ?? '';
 $validToken = false;
@@ -49,7 +49,7 @@ if (isset($_POST['pass']) && isset($_POST['token'])) {
                     <i class="bi bi-check-circle text-success" style="font-size:3.5rem"></i>
                     <h3 class="mt-3 fw-bold">Password Reset!</h3>
                     <p class="text-muted">Your password has been changed successfully.</p>
-                    <a href="login.php?r=<?= $randstr ?>" class="btn btn-primary mt-2">
+                    <a href="<?= BASE_URL ?>/auth/login.php?r=<?= $randstr ?>" class="btn btn-primary mt-2">
                         <i class="bi bi-box-arrow-in-right"></i> Log In Now
                     </a>
                 </div>
@@ -67,7 +67,7 @@ if (isset($_POST['pass']) && isset($_POST['token'])) {
                     <i class="bi bi-exclamation-triangle"></i> <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
                 </div>
 <?php endif; ?>
-                <form method="post" action="reset_password.php">
+                <form method="post" action="<?= BASE_URL ?>/auth/reset_password.php">
                     <input type="hidden" name="token" value="<?= htmlspecialchars($token, ENT_QUOTES, 'UTF-8') ?>">
                     <div class="mb-3">
                         <label for="pass" class="form-label fw-semibold">New Password</label>
@@ -90,7 +90,7 @@ if (isset($_POST['pass']) && isset($_POST['token'])) {
                     <p class="text-muted">
                         <?= $error ? htmlspecialchars($error, ENT_QUOTES, 'UTF-8') : 'This password reset link is invalid or has expired.' ?>
                     </p>
-                    <a href="forgot_password.php?r=<?= $randstr ?>" class="btn btn-primary mt-2">
+                    <a href="<?= BASE_URL ?>/auth/forgot_password.php?r=<?= $randstr ?>" class="btn btn-primary mt-2">
                         <i class="bi bi-arrow-repeat"></i> Request New Link
                     </a>
                 </div>

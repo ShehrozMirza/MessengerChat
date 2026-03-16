@@ -13,7 +13,8 @@
             <div class="card-body p-4">
                 <h3 class="mb-4"><i class="bi bi-database-gear text-primary"></i> Database Setup</h3>
 <?php
-require_once 'functions.php';
+require_once __DIR__ . '/../config.php';
+require_once ROOT_DIR . '/includes/functions.php';
 
 createTable('members',
     'user VARCHAR(16),
@@ -91,14 +92,14 @@ if (isset($_GET['cleanall']) && $_GET['cleanall'] === 'yes') {
                     <i class="bi bi-check-circle"></i> Setup complete!
                 </div>
                 <div class="d-flex flex-wrap gap-2 mb-3">
-                    <a href="index.php" class="btn btn-primary">
+                    <a href="<?= BASE_URL ?>/index.php" class="btn btn-primary">
                         <i class="bi bi-house-door"></i> Go to Home
                     </a>
-                    <a href="setup.php?clean=yes" class="btn btn-warning"
+                    <a href="<?= BASE_URL ?>/admin/setup.php?clean=yes" class="btn btn-warning"
                        onclick="return confirm('Clear all messages, friends & profiles? Member accounts will be kept.')">
                         <i class="bi bi-trash"></i> Clean Data
                     </a>
-                    <a href="setup.php?cleanall=yes" class="btn btn-danger"
+                    <a href="<?= BASE_URL ?>/admin/setup.php?cleanall=yes" class="btn btn-danger"
                        onclick="return confirm('DELETE EVERYTHING including all member accounts? This cannot be undone!')">
                         <i class="bi bi-exclamation-triangle"></i> Reset All
                     </a>
