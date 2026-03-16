@@ -276,62 +276,6 @@ robinsnest/
 
 ## Architecture Diagrams
 
-### Request Flow
-
-How a browser request flows through the app:
-
-```mermaid
-flowchart TD
-    Browser["Browser Request"]
-
-    Browser --> index["index.php<br/><small>Home / Dashboard</small>"]
-    Browser --> auth["auth/"]
-    Browser --> pages["pages/"]
-    Browser --> ajax["ajax/"]
-    Browser --> admin["admin/"]
-
-    auth --> login["login.php"]
-    auth --> signup["signup.php"]
-    auth --> logout["logout.php"]
-    auth --> forgot["forgot_password.php"]
-    auth --> reset["reset_password.php"]
-
-    pages --> messages["messages.php"]
-    pages --> members["members.php"]
-    pages --> friends["friends.php"]
-    pages --> profile["profile.php"]
-
-    ajax --> checkuser["checkuser.php"]
-
-    admin --> setup["setup.php"]
-
-    index --> header["includes/header.php"]
-    login --> header
-    signup --> header
-    logout --> header
-    messages --> header
-    members --> header
-    friends --> header
-    profile --> header
-    forgot --> header
-    reset --> header
-
-    header --> config["config.php<br/><small>ROOT_DIR, BASE_URL</small>"]
-    header --> functions["includes/functions.php<br/><small>PDO, helpers</small>"]
-
-    checkuser --> config
-    checkuser --> functions
-    setup --> config
-    setup --> functions
-
-    functions --> DB[("MySQL<br/>robinsnest")]
-
-    style config fill:#fef3c7,stroke:#d97706,color:#000
-    style functions fill:#dbeafe,stroke:#3b82f6,color:#000
-    style header fill:#dbeafe,stroke:#3b82f6,color:#000
-    style DB fill:#d1fae5,stroke:#059669,color:#000
-```
-
 ### Database Schema
 
 ```mermaid
