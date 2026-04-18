@@ -23,7 +23,7 @@
     </td>
     <td align="center" width="50%">
       <img src="screenshots/chat.svg" width="100%" alt="Chat"/>
-      <br/><sub><b>💬 Chat</b> — Real-time chat bubbles, public/private toggle, image &amp; voice attachments</sub>
+      <br/><sub><b>💬 Chat</b> — Real-time bubbles (purple sent · white received · green private), voice &amp; image</sub>
     </td>
   </tr>
   <tr>
@@ -33,7 +33,7 @@
     </td>
     <td align="center" width="50%">
       <img src="screenshots/friends.svg" width="100%" alt="Friends"/>
-      <br/><sub><b>♥ Friends</b> — Three sections: Mutual Friends · Your Followers · Following</sub>
+      <br/><sub><b>♥ Friends</b> — Three sections: Mutual Friends · Your Followers · You are Following</sub>
     </td>
   </tr>
   <tr>
@@ -49,12 +49,11 @@
   <tr>
     <td align="center" width="50%">
       <img src="screenshots/signup.svg" width="100%" alt="Sign Up"/>
-      <br/><sub><b>✨ Sign Up</b> — Live username check, animated password-strength popover &amp; welcome modal</sub>
+      <br/><sub><b>✨ Sign Up</b> — Live username check &amp; animated password-strength popover with 5-point checklist</sub>
     </td>
     <td align="center" width="50%">
-      <br/>
-      <h3 align="center">⚡ FastMessenger</h3>
-      <p align="center">Lightning-fast messaging.<br/>Real connections.</p>
+      <img src="screenshots/welcome.svg" width="100%" alt="Welcome Modal"/>
+      <br/><sub><b>&#127881; Welcome Modal</b> — Animated confetti, glowing check ring &amp; gradient card on first signup</sub>
     </td>
   </tr>
 </table>

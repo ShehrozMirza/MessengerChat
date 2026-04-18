@@ -1,99 +1,120 @@
 <svg viewBox="0 0 1000 680" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',system-ui,sans-serif">
 <defs>
-  <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#4f46e5"/><stop offset="50%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a855f7"/></linearGradient>
-  <linearGradient id="ag" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4f46e5"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient>
-  <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#10b981"/></linearGradient>
-  <filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#000" flood-opacity="0.06"/></filter>
+  <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" stop-color="#4f46e5"/>
+    <stop offset="50%" stop-color="#7c3aed"/>
+    <stop offset="100%" stop-color="#a855f7"/>
+  </linearGradient>
+  <linearGradient id="ag" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#4f46e5"/>
+    <stop offset="100%" stop-color="#7c3aed"/>
+  </linearGradient>
+  <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#059669"/>
+    <stop offset="100%" stop-color="#10b981"/>
+  </linearGradient>
+  <filter id="sh" x="-10%" y="-20%" width="120%" height="160%">
+    <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.07"/>
+  </filter>
+  <filter id="card" x="-5%" y="-10%" width="110%" height="130%">
+    <feDropShadow dx="0" dy="2" stdDeviation="8" flood-color="#000000" flood-opacity="0.06"/>
+  </filter>
+  <clipPath id="chatClip">
+    <rect x="16" y="358" width="968" height="304" rx="12"/>
+  </clipPath>
 </defs>
 
+<!-- Background -->
 <rect width="1000" height="680" fill="#f1f5f9"/>
 
-<!-- Header -->
+<!-- ── Header ── -->
 <rect width="1000" height="68" fill="url(#hg)"/>
 <rect x="18" y="11" width="46" height="46" rx="13" fill="rgba(255,255,255,0.18)"/>
-<text x="41" y="42" text-anchor="middle" font-size="22" fill="#f59e0b">⚡</text>
+<text x="41" y="38" text-anchor="middle" font-size="20" fill="#f59e0b">&#9889;</text>
 <text x="74" y="34" font-size="17" font-weight="800" fill="white" letter-spacing="-0.3">FastMessenger</text>
 <text x="74" y="50" font-size="9" fill="rgba(255,255,255,0.65)" letter-spacing="0.8">CONNECT &amp; CHAT</text>
-<rect x="852" y="16" width="132" height="36" rx="18" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-<circle cx="876" cy="34" r="13" fill="url(#ag)"/>
-<text x="876" y="39" text-anchor="middle" font-size="12" font-weight="700" fill="white">M</text>
-<text x="893" y="31" font-size="12" font-weight="700" fill="white">MyUser</text>
-<text x="893" y="44" font-size="9" fill="rgba(255,255,255,0.7)">● Online</text>
+<!-- User pill -->
+<rect x="848" y="16" width="136" height="36" rx="18" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+<circle cx="873" cy="34" r="13" fill="url(#ag)"/>
+<text x="873" y="39" text-anchor="middle" font-size="12" font-weight="700" fill="white">M</text>
+<text x="891" y="31" font-size="12" font-weight="700" fill="white">MyUser</text>
+<text x="891" y="45" font-size="9" fill="rgba(255,255,255,0.7)">&#9679; Online</text>
 
-<!-- Tab Bar -->
-<rect y="68" width="1000" height="48" fill="white" filter="url(#sh)"/>
-<text x="83" y="97" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">⌂  Home</text>
-<text x="233" y="97" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">♥  Friends</text>
-<text x="383" y="97" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">👥  Members</text>
-<text x="533" y="97" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">✉  Messages</text>
-<rect x="493" y="113" width="80" height="3" rx="2" fill="#4f46e5"/>
-<text x="683" y="97" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">👤  Profile</text>
-<text x="820" y="97" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">⇥  Logout</text>
+<!-- ── Tab Bar ── -->
+<rect y="68" width="1000" height="48" fill="white" filter="url(#card)"/>
+<text x="83"  y="97" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Home</text>
+<text x="230" y="97" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Friends</text>
+<text x="383" y="97" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Members</text>
+<text x="533" y="97" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">Messages</text>
+<rect x="488" y="113" width="90" height="3" rx="2" fill="#4f46e5"/>
+<text x="683" y="97" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Profile</text>
+<text x="830" y="97" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Logout</text>
 
-<!-- Page title -->
+<!-- ── Page title ── -->
 <text x="24" y="143" font-size="18" font-weight="700" fill="#1e293b">alice's Messages</text>
-<rect x="24" y="148" width="140" height="3" rx="2" fill="#4f46e5"/>
+<rect x="24" y="149" width="148" height="3" rx="2" fill="#4f46e5"/>
 
-<!-- Profile strip card -->
-<rect x="16" y="158" width="968" height="72" rx="14" fill="white" filter="url(#sh)"/>
-<circle cx="52" cy="194" r="24" fill="url(#ag)"/>
-<text x="52" y="200" text-anchor="middle" font-size="14" font-weight="700" fill="white">A</text>
-<text x="86" y="189" font-size="14" font-weight="700" fill="#1e293b">alice</text>
-<text x="86" y="207" font-size="12" fill="#64748b">Sending a message below will appear in alice's wall...</text>
+<!-- ── Profile strip ── -->
+<rect x="16" y="158" width="968" height="70" rx="14" fill="white" filter="url(#card)"/>
+<circle cx="53" cy="193" r="23" fill="url(#ag)"/>
+<text x="53" y="199" text-anchor="middle" font-size="14" font-weight="700" fill="white">A</text>
+<text x="86" y="188" font-size="14" font-weight="700" fill="#1e293b">alice</text>
+<text x="86" y="207" font-size="11" fill="#64748b">Sending a message will appear in alice's wall...</text>
 
-<!-- Message Form Card -->
-<rect x="16" y="240" width="968" height="112" rx="14" fill="white" filter="url(#sh)"/>
-<text x="32" y="263" font-size="13" font-weight="600" fill="#1e293b">Leave a Message for alice</text>
-<!-- Toggle buttons -->
-<rect x="32" y="272" width="80" height="28" rx="7" fill="#4f46e5"/>
-<text x="72" y="291" text-anchor="middle" font-size="11" font-weight="600" fill="white">🌐 Public</text>
-<rect x="118" y="272" width="80" height="28" rx="7" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
-<text x="158" y="291" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">🔒 Private</text>
-<!-- Text area -->
-<rect x="32" y="306" width="768" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
-<text x="48" y="328" font-size="11" fill="#94a3b8">Write your message...</text>
-<!-- Buttons -->
-<rect x="808" y="306" width="80" height="34" rx="8" fill="#4f46e5"/>
-<text x="848" y="328" text-anchor="middle" font-size="12" font-weight="600" fill="white">➤ Send</text>
-<rect x="896" y="306" width="38" height="34" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
-<text x="915" y="328" text-anchor="middle" font-size="14" fill="#64748b">🖼</text>
-<rect x="942" y="306" width="38" height="34" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
-<text x="961" y="328" text-anchor="middle" font-size="14" fill="#64748b">🎤</text>
+<!-- ── Message form ── -->
+<rect x="16" y="238" width="968" height="112" rx="14" fill="white" filter="url(#card)"/>
+<text x="32" y="260" font-size="12" font-weight="600" fill="#1e293b">Leave a Message for alice</text>
+<!-- Public / Private toggle -->
+<rect x="32" y="268" width="82" height="28" rx="7" fill="#4f46e5"/>
+<text x="73" y="287" text-anchor="middle" font-size="11" font-weight="600" fill="white">&#127760; Public</text>
+<rect x="120" y="268" width="82" height="28" rx="7" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="161" y="287" text-anchor="middle" font-size="11" font-weight="600" fill="#94a3b8">&#128274; Private</text>
+<!-- Textarea -->
+<rect x="32" y="304" width="766" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+<text x="48" y="327" font-size="11" fill="#94a3b8">Write your message...</text>
+<!-- Send button -->
+<rect x="806" y="304" width="84" height="36" rx="8" fill="#4f46e5"/>
+<text x="848" y="327" text-anchor="middle" font-size="12" font-weight="600" fill="white">Send</text>
+<!-- Attach buttons -->
+<rect x="898" y="304" width="38" height="36" rx="8" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="917" y="327" text-anchor="middle" font-size="16" fill="#64748b">&#128247;</text>
+<rect x="944" y="304" width="38" height="36" rx="8" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="963" y="327" text-anchor="middle" font-size="16" fill="#64748b">&#127908;</text>
 
-<!-- Chat Window -->
-<rect x="16" y="362" width="968" height="288" rx="12" fill="#eef0f3" stroke="#e2e8f0" stroke-width="1"/>
+<!-- ── Chat window ── -->
+<rect x="16" y="358" width="968" height="304" rx="12" fill="#edf0f4" stroke="#e2e8f0" stroke-width="1"/>
 
-<!-- Received bubble 1 -->
-<rect x="28" y="375" width="260" height="44" rx="16" rx="16" fill="white" filter="url(#sh)"/>
-<rect x="28" y="403" width="14" height="16" fill="white"/>
-<text x="44" y="391" font-size="10" font-weight="700" fill="#4f46e5">alice</text>
-<text x="44" y="407" font-size="12" fill="#1e293b">Hey! How are you doing today?</text>
-<text x="280" y="412" text-anchor="end" font-size="9" fill="#94a3b8">9:10 am</text>
+<!-- All bubbles clipped inside chat window -->
+<g clip-path="url(#chatClip)">
 
-<!-- Sent bubble 1 -->
-<rect x="688" y="432" width="288" height="44" rx="16" fill="#4f46e5"/>
-<rect x="962" y="460" width="14" height="16" fill="#4f46e5"/>
-<text x="704" y="449" font-size="12" fill="white">I'm doing great, thanks for asking!</text>
-<text x="700" y="468" font-size="9" fill="rgba(255,255,255,0.6)">9:12 am  ✓✓</text>
+  <!-- Received bubble 1 -->
+  <rect x="28" y="372" width="272" height="46" rx="14" fill="white" filter="url(#sh)"/>
+  <text x="44" y="390" font-size="10" font-weight="700" fill="#4f46e5">alice</text>
+  <text x="44" y="408" font-size="12" fill="#1e293b">Hey! How are you doing today?</text>
+  <text x="292" y="412" text-anchor="end" font-size="9" fill="#94a3b8">9:10 am</text>
 
-<!-- Received bubble 2 -->
-<rect x="28" y="490" width="310" height="44" rx="16" fill="white" filter="url(#sh)"/>
-<rect x="28" y="518" width="14" height="16" fill="white"/>
-<text x="44" y="506" font-size="10" font-weight="700" fill="#4f46e5">alice</text>
-<text x="44" y="522" font-size="12" fill="#1e293b">Have you tried the voice message feature?</text>
-<text x="330" y="527" text-anchor="end" font-size="9" fill="#94a3b8">9:13 am</text>
+  <!-- Sent bubble 1 -->
+  <rect x="680" y="430" width="292" height="46" rx="14" fill="#4f46e5"/>
+  <text x="696" y="448" font-size="12" fill="white">I'm doing great, thanks! &#128515;</text>
+  <text x="964" y="470" text-anchor="end" font-size="9" fill="rgba(255,255,255,0.6)">9:12 am  &#10003;&#10003;</text>
 
-<!-- Sent bubble 2 – private (green) -->
-<rect x="640" y="548" width="336" height="56" rx="16" fill="url(#sg)"/>
-<rect x="962" y="588" width="14" height="16" fill="#059669"/>
-<text x="656" y="563" font-size="10" fill="rgba(255,255,255,0.75)">🔒 Private</text>
-<text x="656" y="580" font-size="12" fill="white">Yes! The mic feature is super smooth 🎙️</text>
-<text x="656" y="596" font-size="9" fill="rgba(255,255,255,0.6)">9:15 am  ✓✓</text>
+  <!-- Received bubble 2 -->
+  <rect x="28" y="490" width="318" height="46" rx="14" fill="white" filter="url(#sh)"/>
+  <text x="44" y="508" font-size="10" font-weight="700" fill="#4f46e5">alice</text>
+  <text x="44" y="526" font-size="12" fill="#1e293b">Have you tried the voice message feature?</text>
+  <text x="338" y="530" text-anchor="end" font-size="9" fill="#94a3b8">9:13 am</text>
 
-<!-- Received bubble 3 -->
-<rect x="28" y="618" width="200" height="34" rx="16" fill="white" filter="url(#sh)"/>
-<rect x="28" y="636" width="14" height="16" fill="white"/>
-<text x="44" y="634" font-size="10" font-weight="700" fill="#4f46e5">alice</text>
-<text x="44" y="644" font-size="12" fill="#1e293b">Totally agree! 🔥</text>
-<text x="220" y="644" text-anchor="end" font-size="9" fill="#94a3b8">9:16 am</text>
+  <!-- Sent bubble 2 — private (green) -->
+  <rect x="634" y="550" width="350" height="58" rx="14" fill="url(#sg)"/>
+  <text x="650" y="567" font-size="10" font-weight="600" fill="rgba(255,255,255,0.8)">&#128274; Private</text>
+  <text x="650" y="585" font-size="12" fill="white">Yes! The mic recording is super smooth &#127897;</text>
+  <text x="976" y="602" text-anchor="end" font-size="9" fill="rgba(255,255,255,0.6)">9:15 am  &#10003;&#10003;</text>
+
+  <!-- Received bubble 3 -->
+  <rect x="28" y="622" width="188" height="34" rx="14" fill="white" filter="url(#sh)"/>
+  <text x="44" y="636" font-size="10" font-weight="700" fill="#4f46e5">alice</text>
+  <text x="44" y="650" font-size="12" fill="#1e293b">Totally agree! &#128293;</text>
+  <text x="208" y="650" text-anchor="end" font-size="9" fill="#94a3b8">9:16 am</text>
+
+</g>
 </svg>
