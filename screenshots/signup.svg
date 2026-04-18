@@ -37,19 +37,23 @@
 <!-- ── Tab Bar ── -->
 <rect y="68" width="1000" height="48" fill="white" filter="url(#pop)"/>
 <text x="340" y="98" text-anchor="middle" font-size="11" fill="#64748b">⌂  Home</text>
-<text x="500" y="98" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">👤  Sign Up</text>
+<text x="500" y="98" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">Sign Up</text>
 <rect x="460" y="113" width="80" height="3" rx="1.5" fill="#4f46e5"/>
 <text x="660" y="98" text-anchor="middle" font-size="11" fill="#64748b">⇥  Log In</text>
 
 <!-- ── Auth Card ── -->
 <rect x="265" y="136" width="470" height="694" rx="16" fill="white" filter="url(#sh)"/>
 
-<!-- Person-plus icon -->
+<!-- Person-plus icon (pure SVG, no emoji) -->
 <circle cx="500" cy="177" r="22" fill="#eff6ff"/>
-<text x="500" y="185" text-anchor="middle" font-size="22" fill="#4f46e5">&#128100;</text>
+<!-- head -->
+<circle cx="497" cy="170" r="6" fill="#4f46e5"/>
+<!-- body arc -->
+<path d="M485,188 Q485,179 497,179 Q509,179 509,188 Z" fill="#4f46e5"/>
 <!-- Plus badge -->
 <circle cx="516" cy="163" r="8" fill="#4f46e5"/>
-<text x="516" y="167" text-anchor="middle" font-size="11" font-weight="700" fill="white">+</text>
+<rect x="512" y="162" width="8" height="2" rx="1" fill="white"/>
+<rect x="515" y="159" width="2" height="8" rx="1" fill="white"/>
 
 <text x="500" y="218" text-anchor="middle" font-size="22" font-weight="800" fill="#1e293b">Create Account</text>
 <text x="500" y="238" text-anchor="middle" font-size="12.5" fill="#64748b">Join FastMessenger today</text>
@@ -122,7 +126,7 @@
 
 <!-- ── Sign Up Button ── -->
 <rect x="285" y="730" width="430" height="44" rx="8" fill="#4f46e5"/>
-<text x="500" y="758" text-anchor="middle" font-size="14" font-weight="600" fill="white">👤  Sign Up</text>
+<text x="500" y="758" text-anchor="middle" font-size="14" font-weight="600" fill="white">Sign Up</text>
 
 <!-- Log in link -->
 <text x="500" y="806" text-anchor="middle" font-size="12.5" fill="#64748b">Already have an account? <tspan font-weight="700" fill="#4f46e5">Log In</tspan></text>
