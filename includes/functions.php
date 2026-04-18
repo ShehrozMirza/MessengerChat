@@ -62,4 +62,3 @@ function showProfile($user)
         echo "<p class='text-muted fst-italic'>Nothing to see here, yet</p>";
     }
 }
-?>

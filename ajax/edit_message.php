@@ -1,8 +1,10 @@
 <?php
+ob_start();
 require_once __DIR__ . '/../config.php';
 require_once ROOT_DIR . '/includes/functions.php';
 
 session_start();
+ob_clean();
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user'])) {
@@ -31,7 +33,7 @@ $stmt = queryMysql(
     [$text, $id, $user]
 );
 
-if ($stmt->rowCount() === 1) {
+if ($stmt->rowCount() > 0) {
     echo json_encode(['ok' => true]);
 } else {
     http_response_code(403);

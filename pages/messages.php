@@ -233,9 +233,6 @@ if ($shown > 0):
 <?php if ($isWhisper): ?>
                 <i class="bi bi-lock-fill bubble-lock"></i>
 <?php endif; ?>
-<?php if ($isMine): ?>
-                <i class="bi bi-check2-all bubble-check"></i>
-<?php endif; ?>
 <?php if ((int)$row['id'] === $lastMineId && !empty($row['message'])): ?>
                 <button type="button" class="bubble-edit" title="Edit"
                         onclick="openEditModal(<?= (int)$row['id'] ?>, <?= json_encode($row['message']) ?>)">
