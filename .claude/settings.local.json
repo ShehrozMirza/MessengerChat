@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"C:/xampp/mysql/bin/mysql.exe\" -u robinsnest -ppassword robinsnest -e \"SELECT user FROM members ORDER BY user;\")"
+    ]
+  }
+}

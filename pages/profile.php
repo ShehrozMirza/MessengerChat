@@ -86,6 +86,7 @@ if (isset($_FILES['image']['name']) && $_FILES['image']['name'] !== '') {
                 case 'image/jpeg':
                 case 'image/pjpeg': $src = @imagecreatefromjpeg($saveto); break;
                 case 'image/png':   $src = @imagecreatefrompng($saveto);  break;
+                case 'image/webp':  $src = @imagecreatefromwebp($saveto); break;
             }
 
             if ($src) {

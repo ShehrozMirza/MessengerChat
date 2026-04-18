@@ -49,7 +49,9 @@ $result = queryMysql("SELECT user FROM members ORDER BY user");
 <?php while ($row = $result->fetch()):
     if ($row['user'] === $user) continue;
     $member  = htmlspecialchars($row['user'], ENT_QUOTES, 'UTF-8');
-    $initial = strtoupper($member[0]);
+    $gRow    = queryMysql("SELECT gender FROM members WHERE user=?", [$row['user']])->fetch();
+    $gSlug   = ($gRow && $gRow['gender'] === 'F') ? 'female' : 'male';
+    $defAvatar = BASE_URL . "/uploads/default_{$gSlug}.jpg";
 
     $s1 = queryMysql("SELECT * FROM friends WHERE user=? AND friend=?", [$row['user'], $user]);
     $t1 = $s1->rowCount();
@@ -58,11 +60,7 @@ $result = queryMysql("SELECT user FROM members ORDER BY user");
     $t2 = $s2->rowCount();
 ?>
     <div class="member-card">
-<?php if (file_exists(ROOT_DIR . '/uploads/' . $row['user'] . '.jpg')): ?>
-        <img src="<?= BASE_URL ?>/uploads/<?= rawurlencode($row['user']) ?>.jpg" class="member-avatar-img" alt="<?= $member ?>">
-<?php else: ?>
-        <div class="member-avatar"><?= $initial ?></div>
-<?php endif; ?>
+        <img src="<?= file_exists(ROOT_DIR . '/uploads/' . $row['user'] . '.jpg') ? BASE_URL . '/uploads/' . rawurlencode($row['user']) . '.jpg' : $defAvatar ?>" class="member-avatar-img" alt="<?= $member ?>">
         <div class="flex-grow-1">
             <a href="<?= BASE_URL ?>/pages/members.php?view=<?= urlencode($row['user']) ?>&r=<?= $randstr ?>"
                class="fw-semibold text-decoration-none"><?= $member ?></a>
@@ -78,7 +76,7 @@ $result = queryMysql("SELECT user FROM members ORDER BY user");
 <?php if (!$t2): ?>
             <a href="<?= BASE_URL ?>/pages/members.php?add=<?= urlencode($row['user']) ?>&r=<?= $randstr ?>"
                class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-person-plus"></i> <?= $t2 ? 'Follow Back' : 'Follow' ?>
+                <i class="bi bi-person-plus"></i> <?= $t1 ? 'Follow Back' : 'Follow' ?>
             </a>
 <?php else: ?>
             <button type="button" class="btn btn-sm btn-outline-danger"

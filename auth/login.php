@@ -24,6 +24,7 @@ if (isset($_POST['user'])) {
             }
 
             if ($valid) {
+                session_regenerate_id(true);
                 $_SESSION['user'] = $row['user'];
                 header("Location: " . BASE_URL . "/index.php?r=$randstr");
                 exit;

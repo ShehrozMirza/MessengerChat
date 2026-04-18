@@ -46,14 +46,11 @@ if (isset($_GET['remove'])) {
     <div class="friend-section">
         <h5><i class="bi bi-arrow-left-right text-primary"></i> Mutual Friends</h5>
 <?php foreach ($mutual as $friend):
-    $initial = strtoupper($friend[0]);
+    $gR = queryMysql("SELECT gender FROM members WHERE user=?", [$friend])->fetch();
+    $defAv = BASE_URL . '/uploads/default_' . (($gR && $gR['gender'] === 'F') ? 'female' : 'male') . '.jpg';
 ?>
         <div class="member-card">
-<?php if (file_exists(ROOT_DIR . '/uploads/' . $friend . '.jpg')): ?>
-            <img src="<?= BASE_URL ?>/uploads/<?= rawurlencode($friend) ?>.jpg" class="member-avatar-img" alt="<?= htmlspecialchars($friend, ENT_QUOTES, 'UTF-8') ?>">
-<?php else: ?>
-            <div class="member-avatar"><?= $initial ?></div>
-<?php endif; ?>
+            <img src="<?= file_exists(ROOT_DIR . '/uploads/' . $friend . '.jpg') ? BASE_URL . '/uploads/' . rawurlencode($friend) . '.jpg' : $defAv ?>" class="member-avatar-img" alt="<?= htmlspecialchars($friend, ENT_QUOTES, 'UTF-8') ?>">
             <a href="<?= BASE_URL ?>/pages/members.php?view=<?= urlencode($friend) ?>&r=<?= $randstr ?>"
                class="fw-semibold text-decoration-none flex-grow-1">
                 <?= htmlspecialchars($friend, ENT_QUOTES, 'UTF-8') ?>
@@ -72,14 +69,11 @@ if (isset($_GET['remove'])) {
         <h5><i class="bi bi-person-check text-info"></i> <?= $name2 ?> Followers</h5>
         <p class="text-muted small mb-3">People who follow <?= $view === $user ? 'you' : htmlspecialchars($view, ENT_QUOTES, 'UTF-8') ?>.</p>
 <?php foreach ($followers as $friend):
-    $initial = strtoupper($friend[0]);
+    $gR = queryMysql("SELECT gender FROM members WHERE user=?", [$friend])->fetch();
+    $defAv = BASE_URL . '/uploads/default_' . (($gR && $gR['gender'] === 'F') ? 'female' : 'male') . '.jpg';
 ?>
         <div class="member-card">
-<?php if (file_exists(ROOT_DIR . '/uploads/' . $friend . '.jpg')): ?>
-            <img src="<?= BASE_URL ?>/uploads/<?= rawurlencode($friend) ?>.jpg" class="member-avatar-img" alt="<?= htmlspecialchars($friend, ENT_QUOTES, 'UTF-8') ?>">
-<?php else: ?>
-            <div class="member-avatar"><?= $initial ?></div>
-<?php endif; ?>
+            <img src="<?= file_exists(ROOT_DIR . '/uploads/' . $friend . '.jpg') ? BASE_URL . '/uploads/' . rawurlencode($friend) . '.jpg' : $defAv ?>" class="member-avatar-img" alt="<?= htmlspecialchars($friend, ENT_QUOTES, 'UTF-8') ?>">
             <a href="<?= BASE_URL ?>/pages/members.php?view=<?= urlencode($friend) ?>&r=<?= $randstr ?>"
                class="fw-semibold text-decoration-none flex-grow-1">
                 <?= htmlspecialchars($friend, ENT_QUOTES, 'UTF-8') ?>
@@ -95,14 +89,11 @@ if (isset($_GET['remove'])) {
         <h5><i class="bi bi-person-plus text-warning"></i> <?= $name3 === 'You are' ? 'You are' : $name3 ?> Following</h5>
         <p class="text-muted small mb-3">People <?= $view === $user ? 'you follow' : htmlspecialchars($view, ENT_QUOTES, 'UTF-8') . ' follows' ?> who haven't followed back.</p>
 <?php foreach ($following as $friend):
-    $initial = strtoupper($friend[0]);
+    $gR = queryMysql("SELECT gender FROM members WHERE user=?", [$friend])->fetch();
+    $defAv = BASE_URL . '/uploads/default_' . (($gR && $gR['gender'] === 'F') ? 'female' : 'male') . '.jpg';
 ?>
         <div class="member-card">
-<?php if (file_exists(ROOT_DIR . '/uploads/' . $friend . '.jpg')): ?>
-            <img src="<?= BASE_URL ?>/uploads/<?= rawurlencode($friend) ?>.jpg" class="member-avatar-img" alt="<?= htmlspecialchars($friend, ENT_QUOTES, 'UTF-8') ?>">
-<?php else: ?>
-            <div class="member-avatar"><?= $initial ?></div>
-<?php endif; ?>
+            <img src="<?= file_exists(ROOT_DIR . '/uploads/' . $friend . '.jpg') ? BASE_URL . '/uploads/' . rawurlencode($friend) . '.jpg' : $defAv ?>" class="member-avatar-img" alt="<?= htmlspecialchars($friend, ENT_QUOTES, 'UTF-8') ?>">
             <a href="<?= BASE_URL ?>/pages/members.php?view=<?= urlencode($friend) ?>&r=<?= $randstr ?>"
                class="fw-semibold text-decoration-none flex-grow-1">
                 <?= htmlspecialchars($friend, ENT_QUOTES, 'UTF-8') ?>

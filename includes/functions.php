@@ -10,6 +10,7 @@ $opts =
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     PDO::ATTR_EMULATE_PREPARES   => false,
+    PDO::MYSQL_ATTR_FOUND_ROWS   => true,
 ];
 
 try {
@@ -36,7 +37,8 @@ function destroySession()
 {
     $_SESSION = [];
     if (session_id() !== '' || isset($_COOKIE[session_name()]))
-        setcookie(session_name(), '', time() - 2592000, '/');
+        setcookie(session_name(), '', time() - 3600, '/');
+    session_regenerate_id(true);
     session_destroy();
 }
 
@@ -48,9 +50,17 @@ function sanitizeString($var)
 function showProfile($user)
 {
     global $pdo;
-    if (file_exists(ROOT_DIR . "/uploads/$user.jpg"))
-        echo "<img src='" . BASE_URL . "/uploads/" . rawurlencode($user) . ".jpg' class='profile-img rounded-circle mb-3' alt='" .
-             htmlspecialchars($user, ENT_QUOTES, 'UTF-8') . "'>";
+    if (file_exists(ROOT_DIR . "/uploads/$user.jpg")) {
+        $imgSrc = BASE_URL . "/uploads/" . rawurlencode($user) . ".jpg";
+    } else {
+        $gstmt = $pdo->prepare("SELECT gender FROM members WHERE user=?");
+        $gstmt->execute([$user]);
+        $grow = $gstmt->fetch();
+        $gender = ($grow && $grow['gender'] === 'F') ? 'female' : 'male';
+        $imgSrc = BASE_URL . "/uploads/default_{$gender}.jpg";
+    }
+    echo "<img src='" . $imgSrc . "' class='profile-img rounded-circle mb-3' alt='" .
+         htmlspecialchars($user, ENT_QUOTES, 'UTF-8') . "'>";
 
     $stmt = $pdo->prepare("SELECT text FROM profiles WHERE user=?");
     $stmt->execute([$user]);

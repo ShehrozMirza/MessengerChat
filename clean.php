@@ -13,16 +13,21 @@
             <div class="card-body p-4">
                 <h3 class="mb-4"><i class="bi bi-trash text-danger"></i> Clean Database</h3>
 <?php
+if (!in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
+    http_response_code(403);
+    exit('Access denied.');
+}
 require_once __DIR__ . '/includes/functions.php';
 
 $uploadDir = __DIR__ . '/uploads';
+$protected = ['default_male.jpg', 'default_female.jpg'];
 if (is_dir($uploadDir)) {
     $iterator = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator($uploadDir, FilesystemIterator::SKIP_DOTS),
         RecursiveIteratorIterator::CHILD_FIRST
     );
     foreach ($iterator as $item) {
-        if ($item->isFile()) {
+        if ($item->isFile() && !in_array($item->getFilename(), $protected)) {
             @unlink($item->getPathname());
         }
     }
@@ -42,6 +47,7 @@ createTable('members',
     'user VARCHAR(16),
     pass VARCHAR(255),
     email VARCHAR(255),
+    gender CHAR(1) NOT NULL DEFAULT \'M\',
     INDEX(user(6))');
 
 createTable('messages',
@@ -53,6 +59,7 @@ createTable('messages',
     message VARCHAR(4096),
     image VARCHAR(255),
     audio VARCHAR(255),
+    edited TINYINT(1) NOT NULL DEFAULT 0,
     INDEX(auth(6)),
     INDEX(recip(6))');
 

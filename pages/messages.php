@@ -59,7 +59,7 @@ if (isset($_POST['text']) || isset($_FILES['image']) || isset($_FILES['audio']))
 
 if (isset($_GET['erase'])) {
     $erase = (int)$_GET['erase'];
-    queryMysql("DELETE FROM messages WHERE id=? AND recip=?", [$erase, $user]);
+    queryMysql("DELETE FROM messages WHERE id=? AND (auth=? OR recip=?)", [$erase, $user, $user]);
     header("Location: " . BASE_URL . "/pages/messages.php?view=" . urlencode($view) . "&r=$randstr");
     exit;
 }
@@ -72,7 +72,6 @@ if ($view === $user) {
     $name2 = "$viewSafe's";
 }
 
-date_default_timezone_set('UTC');
 ?>
     <h2 class="section-title"><?= $name2 ?> Messages</h2>
 
@@ -184,12 +183,6 @@ while ($row = $result->fetch()) {
 }
 $shown = count($rows);
 
-// Find the ID of the most recent message sent by the logged-in user (rows are DESC)
-$lastMineId = null;
-foreach ($rows as $r) {
-    if ($r['auth'] === $user) { $lastMineId = (int)$r['id']; break; }
-}
-
 $today = date('Y-m-d');
 
 if ($shown > 0):
@@ -198,10 +191,7 @@ if ($shown > 0):
         $isWhisper = ($row['pm'] != 0);
         $authSafe  = htmlspecialchars($row['auth'], ENT_QUOTES, 'UTF-8');
         $recipSafe = htmlspecialchars($row['recip'], ENT_QUOTES, 'UTF-8');
-        $msgDay    = date('Y-m-d', $row['time']);
-        $timeStr   = $msgDay === $today
-            ? date('g:i a', $row['time'])
-            : date('M j, g:i a', $row['time']);
+        $timeStr   = $row['time'];
 ?>
     <div class="chat-row <?= $isMine ? 'chat-sent' : 'chat-received' ?>">
         <div class="chat-bubble <?= $isMine ? 'bubble-sent' : 'bubble-received' ?><?= $isWhisper ? ' bubble-private' : '' ?>">
@@ -226,20 +216,20 @@ if ($shown > 0):
             </div>
 <?php endif; ?>
             <div class="bubble-footer">
-                <span class="bubble-time"><?= $timeStr ?></span>
+                <span class="bubble-time" data-ts="<?= $timeStr ?>"></span>
 <?php if (!empty($row['edited'])): ?>
                 <span class="bubble-edited">edited</span>
 <?php endif; ?>
 <?php if ($isWhisper): ?>
                 <i class="bi bi-lock-fill bubble-lock"></i>
 <?php endif; ?>
-<?php if ((int)$row['id'] === $lastMineId && !empty($row['message'])): ?>
+<?php if ($isMine && !empty($row['message'])): ?>
                 <button type="button" class="bubble-edit" title="Edit"
-                        onclick="openEditModal(<?= (int)$row['id'] ?>, <?= json_encode($row['message']) ?>)">
+                        onclick="openEditModal(<?= (int)$row['id'] ?>, <?= htmlspecialchars(json_encode($row['message']), ENT_QUOTES, 'UTF-8') ?>)">
                     <i class="bi bi-pencil"></i>
                 </button>
 <?php endif; ?>
-<?php if ($row['recip'] === $user): ?>
+<?php if ($isMine || $row['recip'] === $user): ?>
                 <a href="<?= BASE_URL ?>/pages/messages.php?view=<?= urlencode($view) ?>&erase=<?= (int)$row['id'] ?>&r=<?= $randstr ?>"
                    class="bubble-delete" title="Delete"><i class="bi bi-trash"></i></a>
 <?php endif; ?>
@@ -299,6 +289,22 @@ if ($shown === 0):
         function scrollBottom(){ chatWin.scrollTop = chatWin.scrollHeight; }
         scrollBottom();
 
+        function formatTimes() {
+            var now = new Date();
+            var today = now.toDateString();
+            document.querySelectorAll('.bubble-time[data-ts]').forEach(function(el) {
+                var ts = parseInt(el.dataset.ts, 10) * 1000;
+                var d = new Date(ts);
+                if (d.toDateString() === today) {
+                    el.textContent = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+                } else {
+                    el.textContent = d.toLocaleDateString([], { month: 'short', day: 'numeric' })
+                        + ', ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+                }
+            });
+        }
+        formatTimes();
+
         function refreshMessages(){
             var pm = document.querySelector('input[name="pm"]:checked');
             var pmVal = pm ? pm.value : '0';
@@ -311,6 +317,7 @@ if ($shown === 0):
                     var fresh = doc.getElementById('messagesList');
                     if (fresh) {
                         document.getElementById('messagesList').innerHTML = fresh.innerHTML;
+                        formatTimes();
                         if (atBottom) scrollBottom();
                     }
                 });

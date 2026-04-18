@@ -13,6 +13,10 @@
             <div class="card-body p-4">
                 <h3 class="mb-4"><i class="bi bi-database-gear text-primary"></i> Database Setup</h3>
 <?php
+if (!in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
+    http_response_code(403);
+    exit('Access denied.');
+}
 require_once __DIR__ . '/../config.php';
 require_once ROOT_DIR . '/includes/functions.php';
 
@@ -20,6 +24,7 @@ createTable('members',
     'user VARCHAR(16),
     pass VARCHAR(255),
     email VARCHAR(255),
+    gender CHAR(1) NOT NULL DEFAULT \'M\',
     INDEX(user(6))');
 
 createTable('messages',
@@ -29,6 +34,9 @@ createTable('messages',
     pm CHAR(1),
     time INT UNSIGNED,
     message VARCHAR(4096),
+    image VARCHAR(255),
+    audio VARCHAR(255),
+    edited TINYINT(1) NOT NULL DEFAULT 0,
     INDEX(auth(6)),
     INDEX(recip(6))');
 
@@ -53,6 +61,16 @@ createTable('password_resets',
 try {
     queryMysql("ALTER TABLE members MODIFY pass VARCHAR(255)");
     echo "<div class='alert alert-info py-2'><i class='bi bi-info-circle'></i> Upgraded <strong>pass</strong> column to VARCHAR(255) for bcrypt.</div>";
+} catch (Exception $e) {}
+
+try {
+    queryMysql("ALTER TABLE members ADD COLUMN IF NOT EXISTS gender CHAR(1) NOT NULL DEFAULT 'M'");
+    echo "<div class='alert alert-info py-2'><i class='bi bi-info-circle'></i> Added <strong>gender</strong> column to members table.</div>";
+} catch (Exception $e) {}
+
+try {
+    queryMysql("ALTER TABLE messages ADD COLUMN IF NOT EXISTS edited TINYINT(1) NOT NULL DEFAULT 0");
+    echo "<div class='alert alert-info py-2'><i class='bi bi-info-circle'></i> Added <strong>edited</strong> column to messages table.</div>";
 } catch (Exception $e) {}
 
 try {

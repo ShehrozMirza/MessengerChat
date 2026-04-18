@@ -5,8 +5,9 @@ $error = $user_input = '';
 if (isset($_SESSION['user'])) destroySession();
 
 if (isset($_POST['user'])) {
-    $user_input = sanitizeString($_POST['user']);
-    $pass_input = $_POST['pass'] ?? '';
+    $user_input   = sanitizeString($_POST['user']);
+    $pass_input   = $_POST['pass'] ?? '';
+    $gender_input = isset($_POST['gender']) && $_POST['gender'] === 'F' ? 'F' : 'M';
 
     if ($user_input === '' || $pass_input === '') {
         $error = 'Please fill in all fields.';
@@ -17,8 +18,8 @@ if (isset($_POST['user'])) {
             $error = 'That username is already taken.';
         } else {
             $hashed = password_hash($pass_input, PASSWORD_DEFAULT);
-            queryMysql("INSERT INTO members (user, pass) VALUES(?, ?)",
-                [$user_input, $hashed]);
+            queryMysql("INSERT INTO members (user, pass, gender) VALUES(?, ?, ?)",
+                [$user_input, $hashed, $gender_input]);
             $_SESSION['user'] = $user_input;
             $signupSuccess = true;
         }
@@ -26,6 +27,57 @@ if (isset($_POST['user'])) {
 }
 ?>
     <style>
+    .gender-selector { display: flex; gap: 12px; }
+    .gender-option { flex: 1; }
+    .gender-option input[type="radio"] { display: none; }
+    .gender-option label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 16px 10px;
+        border: 2px solid var(--border);
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: #fff;
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.9rem;
+        user-select: none;
+    }
+    .gender-option label .gender-icon {
+        font-size: 2rem;
+        line-height: 1;
+        transition: transform 0.2s ease;
+    }
+    .gender-option label:hover {
+        border-color: var(--primary-light);
+        background: #f5f3ff;
+        color: var(--primary);
+    }
+    .gender-option input[type="radio"]:checked + label {
+        border-color: var(--primary);
+        background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+        color: var(--primary);
+        box-shadow: 0 4px 14px rgba(79,70,229,0.18);
+    }
+    .gender-option input[type="radio"]:checked + label .gender-icon {
+        transform: scale(1.15);
+    }
+    .gender-male input[type="radio"]:checked + label {
+        border-color: #3b82f6;
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        color: #1d4ed8;
+        box-shadow: 0 4px 14px rgba(59,130,246,0.18);
+    }
+    .gender-female input[type="radio"]:checked + label {
+        border-color: #ec4899;
+        background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+        color: #be185d;
+        box-shadow: 0 4px 14px rgba(236,72,153,0.18);
+    }
     .pulse {
         animation: pulse 2s infinite;
     }
@@ -77,6 +129,25 @@ if (isset($_POST['user'])) {
                                 <li id="req-digit"><i class="bi bi-x-circle-fill"></i> One number</li>
                                 <li id="req-special"><i class="bi bi-x-circle-fill"></i> One special character (!@#$...)</li>
                             </ul>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Gender</label>
+                        <div class="gender-selector">
+                            <div class="gender-option gender-male">
+                                <input type="radio" name="gender" id="gender_m" value="M" checked>
+                                <label for="gender_m">
+                                    <span class="gender-icon">♂</span>
+                                    Male
+                                </label>
+                            </div>
+                            <div class="gender-option gender-female">
+                                <input type="radio" name="gender" id="gender_f" value="F">
+                                <label for="gender_f">
+                                    <span class="gender-icon">♀</span>
+                                    Female
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 py-2">
