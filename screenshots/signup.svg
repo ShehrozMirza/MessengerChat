@@ -45,10 +45,6 @@
 <rect x="265" y="136" width="470" height="694" rx="16" fill="white" filter="url(#sh)"/>
 
 <!-- Person-plus icon -->
-<text x="500" y="196" text-anchor="middle" font-size="42" fill="#4f46e5">&#x002B;&#x1F464;</text>
-<text x="500" y="196" text-anchor="middle" font-size="38" fill="#4f46e5">👤</text>
-
-<!-- Actually use Bootstrap-like icon approximation -->
 <circle cx="500" cy="177" r="22" fill="#eff6ff"/>
 <text x="500" y="185" text-anchor="middle" font-size="22" fill="#4f46e5">&#128100;</text>
 <!-- Plus badge -->
