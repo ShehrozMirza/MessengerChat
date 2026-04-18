@@ -13,7 +13,21 @@
             <div class="card-body p-4">
                 <h3 class="mb-4"><i class="bi bi-trash text-danger"></i> Clean Database</h3>
 <?php
-require_once 'functions.php';
+require_once __DIR__ . '/includes/functions.php';
+
+$uploadDir = __DIR__ . '/uploads';
+if (is_dir($uploadDir)) {
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($uploadDir, FilesystemIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::CHILD_FIRST
+    );
+    foreach ($iterator as $item) {
+        if ($item->isFile()) {
+            @unlink($item->getPathname());
+        }
+    }
+    echo "<div class='alert alert-warning py-2'><i class='bi bi-trash'></i> Cleared uploaded files from <strong>uploads/</strong></div>";
+}
 
 $tables = ['password_resets', 'profiles', 'friends', 'messages', 'members'];
 
@@ -37,6 +51,8 @@ createTable('messages',
     pm CHAR(1),
     time INT UNSIGNED,
     message VARCHAR(4096),
+    image VARCHAR(255),
+    audio VARCHAR(255),
     INDEX(auth(6)),
     INDEX(recip(6))');
 

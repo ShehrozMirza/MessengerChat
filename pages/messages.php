@@ -2,12 +2,20 @@
 require_once __DIR__ . '/../includes/header.php';
 
 if (!$loggedin) {
-    echo '</main></body></html>';
+    header("Location: " . BASE_URL . "/auth/login.php");
     exit;
 }
 
 $view   = isset($_GET['view']) ? sanitizeString($_GET['view']) : $user;
 $lastPm = isset($_GET['pm']) && $_GET['pm'] === '1' ? '1' : '0';
+$sendTo = '';
+
+if (isset($_POST['sendTo'])) {
+    $sendTo = sanitizeString($_POST['sendTo']);
+    if ($sendTo !== '') {
+        $view = $sendTo;
+    }
+}
 
 if (isset($_POST['text']) || isset($_FILES['image']) || isset($_FILES['audio'])) {
     $text = isset($_POST['text']) ? sanitizeString($_POST['text']) : '';
@@ -16,6 +24,7 @@ if (isset($_POST['text']) || isset($_FILES['image']) || isset($_FILES['audio']))
     $audFile = null;
 
     $uploadDir = ROOT_DIR . '/uploads/messages/';
+    if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
     $uid = uniqid('', true);
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -28,8 +37,10 @@ if (isset($_POST['text']) || isset($_FILES['image']) || isset($_FILES['audio']))
     }
 
     if (isset($_FILES['audio']) && $_FILES['audio']['error'] === UPLOAD_ERR_OK) {
-        $audFile = $uid . '.webm';
-        move_uploaded_file($_FILES['audio']['tmp_name'], $uploadDir . $audFile);
+        if (in_array($_FILES['audio']['type'], ['audio/webm', 'audio/ogg', 'video/webm'])) {
+            $audFile = $uid . '.webm';
+            move_uploaded_file($_FILES['audio']['tmp_name'], $uploadDir . $audFile);
+        }
     }
 
     if ($text !== '' || $imgFile || $audFile) {
@@ -80,14 +91,15 @@ date_default_timezone_set('UTC');
                 Leave a Message for <?= $viewSafe ?>
 <?php endif; ?>
             </h5>
-            <form method="post" enctype="multipart/form-data" action="<?= BASE_URL ?>/pages/messages.php?view=<?= urlencode($sendTo ?? $view) ?>&r=<?= $randstr ?>" id="msgForm">
+            <form method="post" enctype="multipart/form-data" action="<?= BASE_URL ?>/pages/messages.php?view=<?= urlencode($view) ?>&r=<?= $randstr ?>" id="msgForm">
+                <input type="hidden" name="sendTo" id="sendToField" value="<?= htmlspecialchars($sendTo, ENT_QUOTES, 'UTF-8') ?>">
 <?php if ($view === $user):
     $memberList = queryMysql("SELECT user FROM members WHERE user!=? ORDER BY user", [$user])->fetchAll();
     if ($memberList):
 ?>
                 <div class="mb-3">
                     <label for="sendTo" class="form-label fw-semibold">To</label>
-                    <select class="form-select" id="sendTo" onchange="document.getElementById('msgForm').action='<?= BASE_URL ?>/pages/messages.php?view='+encodeURIComponent(this.value)+'&r=<?= $randstr ?>'">
+                    <select class="form-select" id="sendTo" onchange="document.getElementById('sendToField').value=this.value; document.getElementById('msgForm').action='<?= BASE_URL ?>/pages/messages.php?view='+encodeURIComponent(this.value)+'&r=<?= $randstr ?>'">
                         <option value="" disabled selected>Select a recipient...</option>
 <?php foreach ($memberList as $m): ?>
                         <option value="<?= htmlspecialchars($m['user'], ENT_QUOTES, 'UTF-8') ?>">
@@ -167,7 +179,7 @@ if ($view === $user) {
 }
 $rows  = [];
 while ($row = $result->fetch()) {
-    if ($row['pm'] == 0 || $row['auth'] === $user || $row['recip'] === $user)
+    if ($row['pm'] === '0' || $row['auth'] === $user || $row['recip'] === $user)
         $rows[] = $row;
 }
 $shown = count($rows);
@@ -335,7 +347,7 @@ if ($shown === 0):
                 }).then(function(){
                     var match = actionUrl.match(/view=([^&]*)/);
                     var recipient = match ? decodeURIComponent(match[1]) : '';
-                    if (recipient && recipient !== '<?= addslashes($user) ?>') {
+                    if (recipient && recipient !== <?= json_encode($user) ?>) {
                         window.location.href = baseUrl + '/pages/messages.php?view=' + encodeURIComponent(recipient) + '&pm=' + pmVal + '&r=' + Date.now().toString(36);
                     } else {
                         form.querySelector('textarea[name="text"]').value = '';

@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../includes/header.php';
 
 if (!$loggedin) {
-    echo '</main></body></html>';
+    header("Location: " . BASE_URL . "/auth/login.php");
     exit;
 }
 
@@ -29,15 +29,15 @@ $friendTarget = '';
 
 if (isset($_GET['add'])) {
     $add  = sanitizeString($_GET['add']);
-    $stmt = queryMysql("SELECT * FROM friends WHERE user=? AND friend=?", [$add, $user]);
+    $stmt = queryMysql("SELECT * FROM friends WHERE user=? AND friend=?", [$user, $add]);
     if (!$stmt->rowCount()) {
-        queryMysql("INSERT INTO friends VALUES(?, ?)", [$add, $user]);
+        queryMysql("INSERT INTO friends VALUES(?, ?)", [$user, $add]);
     }
     $friendAction = 'followed';
     $friendTarget = htmlspecialchars($add, ENT_QUOTES, 'UTF-8');
 } elseif (isset($_GET['remove'])) {
     $remove = sanitizeString($_GET['remove']);
-    queryMysql("DELETE FROM friends WHERE user=? AND friend=?", [$remove, $user]);
+    queryMysql("DELETE FROM friends WHERE user=? AND friend=?", [$user, $remove]);
     $friendAction = 'unfollowed';
     $friendTarget = htmlspecialchars($remove, ENT_QUOTES, 'UTF-8');
 }
@@ -69,13 +69,13 @@ $result = queryMysql("SELECT user FROM members ORDER BY user");
 <?php if (($t1 + $t2) > 1): ?>
             <span class="badge bg-primary ms-2">Mutual Friend</span>
 <?php elseif ($t1): ?>
-            <span class="badge bg-info ms-2">Following</span>
-<?php elseif ($t2): ?>
             <span class="badge bg-warning text-dark ms-2">Follows You</span>
+<?php elseif ($t2): ?>
+            <span class="badge bg-info ms-2">Following</span>
 <?php endif; ?>
         </div>
         <div>
-<?php if (!$t1): ?>
+<?php if (!$t2): ?>
             <a href="<?= BASE_URL ?>/pages/members.php?add=<?= urlencode($row['user']) ?>&r=<?= $randstr ?>"
                class="btn btn-sm btn-outline-primary">
                 <i class="bi bi-person-plus"></i> <?= $t2 ? 'Follow Back' : 'Follow' ?>
