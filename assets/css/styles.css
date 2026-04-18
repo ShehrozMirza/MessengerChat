@@ -424,8 +424,9 @@ body {
 }
 
 .bubble-time {
-  font-size: 0.6rem;
-  opacity: 0.5;
+  font-size: 0.65rem;
+  opacity: 0.65;
+  white-space: nowrap;
 }
 
 .bubble-lock {
@@ -453,6 +454,32 @@ body {
 }
 .bubble-delete:hover {
   opacity: 1;
+}
+
+.bubble-edit {
+  background: none;
+  border: none;
+  padding: 0 2px;
+  font-size: 0.6rem;
+  opacity: 0.35;
+  cursor: pointer;
+  line-height: 1;
+  transition: opacity 0.2s;
+}
+.bubble-sent .bubble-edit {
+  color: #fff;
+}
+.bubble-received .bubble-edit {
+  color: var(--primary);
+}
+.bubble-edit:hover {
+  opacity: 1;
+}
+
+.bubble-edited {
+  font-size: 0.58rem;
+  opacity: 0.5;
+  font-style: italic;
 }
 
 @media (max-width: 576px) {

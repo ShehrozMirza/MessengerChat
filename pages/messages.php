@@ -184,12 +184,24 @@ while ($row = $result->fetch()) {
 }
 $shown = count($rows);
 
+// Find the ID of the most recent message sent by the logged-in user (rows are DESC)
+$lastMineId = null;
+foreach ($rows as $r) {
+    if ($r['auth'] === $user) { $lastMineId = (int)$r['id']; break; }
+}
+
+$today = date('Y-m-d');
+
 if ($shown > 0):
     foreach ($rows as $row):
         $isMine    = ($row['auth'] === $user);
         $isWhisper = ($row['pm'] != 0);
         $authSafe  = htmlspecialchars($row['auth'], ENT_QUOTES, 'UTF-8');
         $recipSafe = htmlspecialchars($row['recip'], ENT_QUOTES, 'UTF-8');
+        $msgDay    = date('Y-m-d', $row['time']);
+        $timeStr   = $msgDay === $today
+            ? date('g:i a', $row['time'])
+            : date('M j, g:i a', $row['time']);
 ?>
     <div class="chat-row <?= $isMine ? 'chat-sent' : 'chat-received' ?>">
         <div class="chat-bubble <?= $isMine ? 'bubble-sent' : 'bubble-received' ?><?= $isWhisper ? ' bubble-private' : '' ?>">
@@ -214,12 +226,21 @@ if ($shown > 0):
             </div>
 <?php endif; ?>
             <div class="bubble-footer">
-                <span class="bubble-time"><?= date('g:ia', $row['time']) ?></span>
+                <span class="bubble-time"><?= $timeStr ?></span>
+<?php if (!empty($row['edited'])): ?>
+                <span class="bubble-edited">edited</span>
+<?php endif; ?>
 <?php if ($isWhisper): ?>
                 <i class="bi bi-lock-fill bubble-lock"></i>
 <?php endif; ?>
 <?php if ($isMine): ?>
                 <i class="bi bi-check2-all bubble-check"></i>
+<?php endif; ?>
+<?php if ((int)$row['id'] === $lastMineId && !empty($row['message'])): ?>
+                <button type="button" class="bubble-edit" title="Edit"
+                        onclick="openEditModal(<?= (int)$row['id'] ?>, <?= json_encode($row['message']) ?>)">
+                    <i class="bi bi-pencil"></i>
+                </button>
 <?php endif; ?>
 <?php if ($row['recip'] === $user): ?>
                 <a href="<?= BASE_URL ?>/pages/messages.php?view=<?= urlencode($view) ?>&erase=<?= (int)$row['id'] ?>&r=<?= $randstr ?>"
@@ -242,6 +263,31 @@ if ($shown === 0):
 <?php endif; ?>
     </div>
     </div>
+
+<!-- Edit Message Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-semibold" id="editModalLabel">
+                    <i class="bi bi-pencil-square me-2 text-primary"></i>Edit Message
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <textarea class="form-control" id="editText" rows="4" placeholder="Message text..."></textarea>
+                <div id="editError" class="text-danger small mt-2 d-none"></div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveEdit()">
+                    <i class="bi bi-check2 me-1"></i>Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -327,6 +373,45 @@ if ($shown === 0):
             }).catch(function(){
                 alert('Microphone access denied. Please allow microphone permission.');
             });
+        };
+
+        var editMsgId = null;
+        var editModal = null;
+
+        window.openEditModal = function(id, text) {
+            editMsgId = id;
+            document.getElementById('editText').value = text;
+            document.getElementById('editError').classList.add('d-none');
+            if (!editModal) editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            editModal.show();
+        };
+
+        window.saveEdit = function() {
+            var text = document.getElementById('editText').value.trim();
+            var errEl = document.getElementById('editError');
+            if (!text) {
+                errEl.textContent = 'Message cannot be empty.';
+                errEl.classList.remove('d-none');
+                return;
+            }
+            var fd = new FormData();
+            fd.append('id', editMsgId);
+            fd.append('text', text);
+            fetch(baseUrl + '/ajax/edit_message.php', { method: 'POST', body: fd })
+                .then(function(r){ return r.json(); })
+                .then(function(data){
+                    if (data.ok) {
+                        editModal.hide();
+                        refreshMessages();
+                    } else {
+                        errEl.textContent = data.error || 'Failed to save.';
+                        errEl.classList.remove('d-none');
+                    }
+                })
+                .catch(function(){
+                    errEl.textContent = 'Network error. Please try again.';
+                    errEl.classList.remove('d-none');
+                });
         };
 
         var form = document.getElementById('msgForm');
