@@ -2,6 +2,22 @@
 
 A modern PHP social messaging application with real-time chat, image & voice messages, built with Bootstrap 5 and AJAX.
 
+## Screenshots
+
+| 🏠 Home Dashboard | 💬 Chat & Messages |
+|:---:|:---:|
+| ![Home](screenshots/home.svg) | ![Chat](screenshots/chat.svg) |
+
+| 👥 Members | ♥ Friends |
+|:---:|:---:|
+| ![Members](screenshots/members.svg) | ![Friends](screenshots/friends.svg) |
+
+| 👤 Profile | 🔑 Login | ✨ Sign Up |
+|:---:|:---:|:---:|
+| ![Profile](screenshots/profile.svg) | ![Login](screenshots/login.svg) | ![Sign Up](screenshots/signup.svg) |
+
+---
+
 ## Features
 
 - **User Accounts** — Registration with bcrypt password hashing, login, forgot/reset password
