@@ -27,7 +27,7 @@
 
 <p align="center">
   <img src="screenshots/members.svg" width="900" alt="Members"/>
-  <br/><sub><b>Members</b> — Browse all users, follow/unfollow with Mutual · Following · Follows You badges</sub>
+  <br/><sub><b>Members</b> — Browse all users with gender-aware avatars, follow/unfollow with Mutual · Following · Follows You badges</sub>
 </p>
 
 <p align="center">
@@ -37,7 +37,7 @@
 
 <p align="center">
   <img src="screenshots/profile.svg" width="900" alt="Profile"/>
-  <br/><sub><b>Profile</b> — Upload avatar (auto-resized), write a bio, rename username (cascades across all tables)</sub>
+  <br/><sub><b>Profile</b> — Upload avatar (auto-resized, GIF/JPEG/PNG/WebP), write a bio, rename username (cascades across all tables)</sub>
 </p>
 
 <p align="center">
@@ -47,7 +47,7 @@
 
 <p align="center">
   <img src="screenshots/signup.svg" width="900" alt="Sign Up"/>
-  <br/><sub><b>Sign Up</b> — Live username availability check &amp; animated 5-point password strength popover</sub>
+  <br/><sub><b>Sign Up</b> — Live username check, animated password strength popover &amp; gender selection with card-style radio buttons</sub>
 </p>
 
 <p align="center">
@@ -61,16 +61,20 @@
 
 | | Feature | Details |
 |---|---|---|
-| 🔐 | **Authentication** | Register · Login · Forgot / Reset password · bcrypt hashing |
+| 🔐 | **Authentication** | Register · Login · Forgot / Reset password · bcrypt hashing · session regeneration |
 | 💬 | **Real-time Chat** | AJAX polling every 3 s — no page reload, bubbles update live |
-| ✏️ | **Edit Messages** | Edit your most recent sent message; marked *edited* after saving |
+| ✏️ | **Edit Messages** | Edit any of your sent text messages; marked *edited* after saving |
+| 🗑️ | **Delete Messages** | Delete your sent messages or messages received — with confirmation dialog |
 | 🔒 | **Public & Private** | Toggle per message — private messages are green-tinted with a lock icon |
 | 🖼️ | **Image Messages** | Attach GIF, JPEG, PNG, or WebP — renders inline inside the bubble |
 | 🎙️ | **Voice Messages** | Record audio in the browser via MediaRecorder, send as a playable clip |
 | 👥 | **Friend System** | Follow / unfollow any member · mutual detection · confirmation dialogs |
-| 📝 | **Profiles** | Photo upload (resized to 200 px), bio, username rename with DB transaction |
+| 📝 | **Profiles** | Photo upload (GIF/JPEG/PNG/WebP, resized to 200 px), bio, username rename with DB transaction |
+| 🚻 | **Gender** | Male / Female selected at signup · card-style radio buttons · gender-aware default avatars |
+| 🖼️ | **Default Avatars** | Unique avatar per user · falls back to male/female placeholder based on gender |
+| 🕒 | **Local Timestamps** | Message times displayed in the browser's local timezone — today shows time only, older shows date + time |
 | 📱 | **Responsive UI** | Bootstrap 5 tab nav, sticky header, modals, works on mobile |
-| 🛠️ | **Admin Tools** | One-click DB setup, data cleanup, and full reset at `/admin/setup.php` |
+| 🛠️ | **Admin Tools** | DB setup, data cleanup, and full reset at `/admin/setup.php` (localhost-only) |
 
 ---
 
@@ -83,7 +87,7 @@
 | Frontend | Bootstrap 5.3.3 · Bootstrap Icons 1.11.3 |
 | Real-time | AJAX fetch polling · FormData API |
 | Media | Browser MediaRecorder API · PHP GD extension |
-| Security | bcrypt · prepared statements · XSS output escaping |
+| Security | bcrypt · prepared statements · XSS output escaping · session regeneration |
 
 ---
 
@@ -231,7 +235,10 @@ FLUSH PRIVILEGES;
 USE robinsnest;
 
 CREATE TABLE IF NOT EXISTS members (
-    user VARCHAR(16), pass VARCHAR(255), email VARCHAR(255),
+    user   VARCHAR(16),
+    pass   VARCHAR(255),
+    email  VARCHAR(255),
+    gender CHAR(1) NOT NULL DEFAULT 'M',
     INDEX(user(6))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -301,34 +308,36 @@ robinsnest/
 │
 ├── includes/
 │   ├── header.php             ← Session init, nav, tab bar, logout modal
-│   └── functions.php          ← PDO connection, queryMysql(), helpers
+│   └── functions.php          ← PDO connection, queryMysql(), showProfile(), helpers
 │
 ├── auth/
-│   ├── login.php              ← Login with bcrypt verify
-│   ├── signup.php             ← Register + password strength popover + welcome modal
+│   ├── login.php              ← Login with bcrypt verify + session regeneration
+│   ├── signup.php             ← Register, gender select, password strength + welcome modal
 │   ├── logout.php             ← Session destroy + redirect
-│   ├── forgot_password.php    ← Generate and email reset token
+│   ├── forgot_password.php    ← Generate and display reset token
 │   └── reset_password.php     ← Token-validated password reset
 │
 ├── pages/
-│   ├── messages.php           ← Chat: AJAX refresh, image/voice, public/private, edit
-│   ├── members.php            ← Member list with follow/unfollow
-│   ├── friends.php            ← Mutual · Followers · Following sections
-│   └── profile.php            ← Avatar upload, bio, username rename (transaction)
+│   ├── messages.php           ← Chat: AJAX refresh, image/voice, edit, delete with confirm dialog
+│   ├── members.php            ← Member list with gender-aware avatars, follow/unfollow
+│   ├── friends.php            ← Mutual · Followers · Following sections with gender-aware avatars
+│   └── profile.php            ← Avatar upload (GIF/JPEG/PNG/WebP), bio, username rename (transaction)
 │
 ├── ajax/
 │   ├── checkuser.php          ← Live username availability (signup)
 │   └── edit_message.php       ← Save edited message text (auth-gated JSON endpoint)
 │
 ├── admin/
-│   └── setup.php              ← DB table creation, data cleanup, full reset
+│   └── setup.php              ← DB table creation, data cleanup, full reset (localhost only)
 │
 ├── assets/css/
-│   └── styles.css             ← Bubbles, tabs, cards, strength meter, edit styles
+│   └── styles.css             ← Bubbles, tabs, cards, strength meter, gender selector styles
 │
 ├── screenshots/               ← SVG mockups used in this README
 │
 └── uploads/                   ← Runtime: profile photos + message attachments
+    ├── default_male.jpg       ← Fallback avatar for male users
+    ├── default_female.jpg     ← Fallback avatar for female users
     └── messages/
 ```
 
@@ -344,6 +353,7 @@ erDiagram
         VARCHAR16  user    PK
         VARCHAR255 pass
         VARCHAR255 email
+        CHAR1      gender
     }
     messages {
         INT        id      PK
@@ -462,11 +472,12 @@ flowchart LR
 ### Chat
 
 - Your messages appear on the **right** in purple; others appear on the **left** in white
-- Private messages are **green** with a lock icon; they are only visible to the two participants
+- Private messages are **green** with a lock icon; only visible to the two participants
 - The chat window **auto-refreshes every 3 seconds** via AJAX — no full page reload
 - Image and voice attachments render **inline** inside each bubble
-- Each bubble shows a **timestamp** — time only for today, date + time for older messages
-- You can **edit your most recent sent message** using the pencil icon; edited messages are labelled *edited*
+- Each bubble shows a **timestamp** in your local timezone — time only for today, date + time for older messages
+- **Edit any of your sent text messages** using the pencil icon; edited messages are labelled *edited*
+- **Delete** your sent messages or messages received — a confirmation dialog prevents accidental deletion
 
 ### Friend System
 
@@ -479,13 +490,22 @@ flowchart LR
 
 ### Profiles
 
-- Upload a photo — auto-resized to **200 px**, saved as JPG
+- Upload a photo (GIF, JPEG, PNG, or WebP) — auto-resized to **200 px**, saved as JPG
+- No custom photo? A **gender-appropriate default avatar** is shown automatically
 - Write a bio that appears on your profile card and your message wall
 - **Rename your username** — a single DB transaction updates all five tables atomically
+
+### Gender
+
+- Selected at signup via card-style radio buttons: **♂ Male** (blue) / **♀ Female** (pink)
+- Stored as `M` or `F` in the `members` table
+- Used to pick the correct default avatar (`default_male.jpg` / `default_female.jpg`) when no custom photo is uploaded
 
 ---
 
 ## Database Cleanup
+
+> ⚠️ `admin/setup.php` and `clean.php` are restricted to **localhost** only.
 
 Visit `http://localhost/robinsnest/admin/setup.php` for one-click options:
 
@@ -520,8 +540,11 @@ DELETE FROM members;
 | `imagecreatefromjpeg()` undefined | Enable the GD extension — see Step 2 |
 | "Invalid password" on fresh install | Run `admin/setup.php` to resize the `pass` column to VARCHAR(255) |
 | Profile images not showing | Check that `uploads/` exists and Apache can write to it |
+| Default avatars missing | Run `admin/setup.php` — it will note missing columns; download defaults via the seeder script |
 | Voice recording not working | Microphone requires **HTTPS or localhost** — use a secure context |
-| Edit button not appearing | Your database may need the `edited` column — run: `ALTER TABLE messages ADD COLUMN IF NOT EXISTS edited TINYINT(1) NOT NULL DEFAULT 0;` |
+| Gender column missing | Run: `ALTER TABLE members ADD COLUMN IF NOT EXISTS gender CHAR(1) NOT NULL DEFAULT 'M';` |
+| Edited column missing | Run: `ALTER TABLE messages ADD COLUMN IF NOT EXISTS edited TINYINT(1) NOT NULL DEFAULT 0;` |
 | CSS not updating | Hard-refresh with `Ctrl+Shift+R` — styles are cache-busted by default |
 | Database connection error | Check credentials in `includes/functions.php` match your MySQL user |
 | Broken links after moving | Update `BASE_URL` in `config.php` to match your new path |
+| admin/setup.php returns 403 | It is restricted to localhost — access it from the same machine running XAMPP |
