@@ -1,240 +1,297 @@
-# FastMessenger
+<h1 align="center">⚡ FastMessenger</h1>
 
-A modern PHP social messaging application with real-time chat, image & voice messages, built with Bootstrap 5 and AJAX.
+<p align="center">
+  A modern PHP social messaging app with real-time chat, image &amp; voice messages, friend system, and a beautiful Bootstrap 5 UI.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/PHP-8.0+-777BB4?style=for-the-badge&logo=php&logoColor=white"/>
+  <img src="https://img.shields.io/badge/MySQL-MariaDB-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white"/>
+  <img src="https://img.shields.io/badge/XAMPP-Ready-FB7A24?style=for-the-badge&logo=xampp&logoColor=white"/>
+</p>
+
+---
 
 ## Screenshots
 
-| 🏠 Home Dashboard | 💬 Chat & Messages |
-|:---:|:---:|
-| ![Home](screenshots/home.svg) | ![Chat](screenshots/chat.svg) |
-
-| 👥 Members | ♥ Friends |
-|:---:|:---:|
-| ![Members](screenshots/members.svg) | ![Friends](screenshots/friends.svg) |
-
-| 👤 Profile | 🔑 Login | ✨ Sign Up |
-|:---:|:---:|:---:|
-| ![Profile](screenshots/profile.svg) | ![Login](screenshots/login.svg) | ![Sign Up](screenshots/signup.svg) |
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="screenshots/home.svg" width="100%" alt="Home Dashboard"/>
+      <br/><sub><b>🏠 Home Dashboard</b> — Recent public &amp; private message feeds with profile sidebar</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="screenshots/chat.svg" width="100%" alt="Chat"/>
+      <br/><sub><b>💬 Chat</b> — Real-time chat bubbles, public/private toggle, image &amp; voice attachments</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="screenshots/members.svg" width="100%" alt="Members"/>
+      <br/><sub><b>👥 Members</b> — Browse all users, follow/unfollow with Mutual · Following · Follows You badges</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="screenshots/friends.svg" width="100%" alt="Friends"/>
+      <br/><sub><b>♥ Friends</b> — Three sections: Mutual Friends · Your Followers · Following</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="screenshots/profile.svg" width="100%" alt="Profile"/>
+      <br/><sub><b>👤 Profile</b> — Edit username, bio and upload a profile photo with live preview</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="screenshots/login.svg" width="100%" alt="Login"/>
+      <br/><sub><b>🔑 Login</b> — Clean auth card with bcrypt-verified credentials</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="screenshots/signup.svg" width="100%" alt="Sign Up"/>
+      <br/><sub><b>✨ Sign Up</b> — Live username check, animated password-strength popover &amp; welcome modal</sub>
+    </td>
+    <td align="center" width="50%">
+      <br/>
+      <h3 align="center">⚡ FastMessenger</h3>
+      <p align="center">Lightning-fast messaging.<br/>Real connections.</p>
+    </td>
+  </tr>
+</table>
 
 ---
 
 ## Features
 
-- **User Accounts** — Registration with bcrypt password hashing, login, forgot/reset password
-- **Real-time Chat** — Chat bubble layout (sender right, receiver left) with 3-second AJAX auto-refresh
-- **Image Messages** — Attach and send images (GIF, JPEG, PNG, WebP) inline in chat
-- **Voice Messages** — Record and send voice messages using browser microphone
-- **Public & Private Messages** — Toggle between public wall posts and private direct messages
-- **Friend System** — Follow/unfollow users with confirmation dialogs, mutual friend detection
-- **User Profiles** — Upload profile photo (auto-resized), write a bio
-- **Modern UI** — Responsive Bootstrap 5 design with tab navigation, modals, and active page indicators
-- **Database Tools** — Built-in setup, cleanup, and full reset via browser
+| Feature | Description |
+|---|---|
+| 🔐 **Auth** | Register, login, forgot/reset password with bcrypt hashing |
+| 💬 **Real-time Chat** | Chat bubbles (sent right, received left) with 3s AJAX auto-refresh |
+| 🔒 **Public & Private** | Toggle between public wall posts and private direct messages |
+| 🖼️ **Image Messages** | Attach GIF, JPEG, PNG, WebP images inline in chat |
+| 🎙️ **Voice Messages** | Record and send voice notes using the browser microphone |
+| 👥 **Friend System** | Follow/unfollow with mutual detection, confirmation dialogs |
+| 📝 **Profiles** | Upload photo (auto-resized to 200px), write a bio, rename username |
+| 📱 **Responsive UI** | Bootstrap 5 tab navigation, sticky header, modals, dark bubbles |
+| 🛠️ **Admin Tools** | Browser-based DB setup, data cleanup and full reset |
 
 ---
 
-## Requirements
+## Tech Stack
 
-- **XAMPP** (or any Apache + PHP + MySQL stack)
-- **PHP 8.0+** with GD extension enabled
-- **MySQL / MariaDB**
+| Layer | Technology |
+|---|---|
+| Backend | PHP 8+ · PDO prepared statements |
+| Database | MySQL / MariaDB (utf8mb4) |
+| Frontend | Bootstrap 5.3.3 · Bootstrap Icons 1.11.3 |
+| Real-time | AJAX polling every 3 s · FormData API |
+| Media | Browser MediaRecorder API · PHP GD extension |
+| Security | bcrypt · prepared statements · XSS escaping |
 
 ---
 
-## Step-by-Step Setup
+## Quick Start
 
-### 1. Install XAMPP
+> **TL;DR** — 4 commands from zero to running:
 
-Download and install XAMPP from https://www.apachefriends.org/
+```bash
+# 1. Clone into XAMPP web root
+cd C:/xampp/htdocs
+git clone <repository-url> robinsnest
 
-Start **Apache** and **MySQL** from the XAMPP Control Panel.
+# 2. Create upload directories
+mkdir robinsnest/uploads robinsnest/uploads/messages
 
-> **Linux/Mac alternative:** You can use any Apache + PHP + MySQL stack (LAMP, MAMP, Docker, etc.)
+# 3. Import the database (MySQL CLI)
+mysql -u root -p < robinsnest/database.sql
 
-### 2. Enable PHP GD Extension
+# 4. Open in browser
+start http://localhost/robinsnest
+```
 
-The GD extension is required for profile image uploads and resizing.
+---
+
+## Detailed Setup Guide
+
+### Setup Flow
+
+```mermaid
+flowchart TD
+    A([🖥️ Start]) --> B[Install XAMPP]
+    B --> C[Start Apache + MySQL\nfrom Control Panel]
+    C --> D{PHP GD\nenabled?}
+    D -- No --> E[Enable extension=gd\nin php.ini → Restart Apache]
+    D -- Yes --> F[Clone / copy project\ninto htdocs/robinsnest]
+    E --> F
+    F --> G[Create upload directories\nuploads/ and uploads/messages/]
+    G --> H[Import database.sql\nvia phpMyAdmin or CLI]
+    H --> I{Default path?}
+    I -- Yes /robinsnest --> J[Open localhost/robinsnest]
+    I -- Custom path --> K[Update BASE_URL\nin config.php]
+    K --> J
+    J --> L([🚀 Sign Up & Start Chatting])
+
+    style A fill:#4f46e5,color:#fff,stroke:none
+    style L fill:#10b981,color:#fff,stroke:none
+    style D fill:#f59e0b,color:#fff,stroke:none
+    style I fill:#f59e0b,color:#fff,stroke:none
+    style E fill:#fef3c7,stroke:#f59e0b
+    style K fill:#fef3c7,stroke:#f59e0b
+```
+
+---
+
+### Step 1 — Install XAMPP
+
+Download and install XAMPP from [apachefriends.org](https://www.apachefriends.org/).
+
+Open the **XAMPP Control Panel** and start both **Apache** and **MySQL**.
+
+> **Linux/Mac alternative:** Any Apache + PHP + MySQL stack works — LAMP, MAMP, Docker, Laragon, etc.
+
+---
+
+### Step 2 — Enable PHP GD Extension
+
+The GD extension is required for profile image resizing.
 
 **Windows (XAMPP):**
-1. Open `C:\xampp\php\php.ini`
-2. Find the line `;extension=gd`
-3. Remove the semicolon so it reads: `extension=gd`
-4. Restart Apache from XAMPP Control Panel
+```ini
+; Open C:\xampp\php\php.ini
+; Find this line and remove the semicolon:
+extension=gd
+```
+Then restart Apache from the Control Panel.
 
 **Linux:**
 ```bash
-sudo apt install php-gd
-sudo systemctl restart apache2
+sudo apt install php-gd && sudo systemctl restart apache2
 ```
 
-**Mac (MAMP):** GD is usually enabled by default.
+**Mac (MAMP):** GD is enabled by default.
 
-### 3. Clone / Copy Project Files
+---
 
-Clone the repository or copy the project folder into your web root:
+### Step 3 — Clone the Project
 
-**Windows:**
-```powershell
+```bash
+# Windows
 cd C:\xampp\htdocs
 git clone <repository-url> robinsnest
-```
 
-**Linux:**
-```bash
+# Linux
 cd /var/www/html
 git clone <repository-url> robinsnest
-```
 
-**Mac (MAMP):**
-```bash
+# Mac (MAMP)
 cd /Applications/MAMP/htdocs
 git clone <repository-url> robinsnest
 ```
 
-Or download the ZIP and extract it to one of the paths above.
+> No Git? [Download the ZIP](../../archive/refs/heads/main.zip) and extract it as `htdocs/robinsnest`.
 
-### 4. Create Upload Directories
+---
 
-The app stores profile photos and message attachments in these folders. Git does not track empty directories, so create them manually after cloning:
+### Step 4 — Create Upload Directories
 
-**Windows (PowerShell):**
-```powershell
+Git does not track empty directories. Create them manually after cloning:
+
+```bash
+# Windows (PowerShell)
 mkdir C:\xampp\htdocs\robinsnest\uploads
 mkdir C:\xampp\htdocs\robinsnest\uploads\messages
-```
 
-**Linux/Mac:**
-```bash
-cd /var/www/html/robinsnest
+# Linux / Mac
+cd /var/www/html/robinsnest   # or your MAMP path
 mkdir -p uploads/messages
 chmod 755 uploads uploads/messages
 ```
 
-### 5. Configure Database Credentials
+---
 
-Open `includes/functions.php` and verify these settings match your MySQL setup:
+### Step 5 — Set Up the Database
 
-```php
-$db_host = 'localhost';     // Database host
-$db_name = 'robinsnest';   // Database name
-$db_user = 'robinsnest';   // Database username
-$db_pass = 'password';     // Database password
-$db_chrs = 'utf8mb4';      // Character set
+**Option A — Import the SQL file (recommended):**
+
+```bash
+# CLI (run from the project folder)
+mysql -u root -p < database.sql
 ```
 
-> **Note:** The default credentials assume a MySQL user `robinsnest` with password `password`. If you prefer different credentials, update them here **before** running the queries below (and adjust the SQL accordingly).
+Or in **phpMyAdmin** → open `http://localhost/phpmyadmin` → click **Import** → choose `database.sql` → click **Go**.
 
-### 6. Set Up the Database
+**Option B — Browser setup (tables only):**
 
-Open **phpMyAdmin** at http://localhost/phpmyadmin and go to the **SQL** tab (or use MySQL CLI). Run the following queries **in order**:
+If you already have the database and user, visit:
+```
+http://localhost/robinsnest/admin/setup.php
+```
 
-> **Quick alternative:** Instead of running these manually, you can import the included `database.sql` file which contains all queries below in one file:
-> - **phpMyAdmin:** Open http://localhost/phpmyadmin → click **Import** tab → choose `database.sql` → click **Go**
-> - **CLI (run from the project folder):** `mysql -u root -p < database.sql`
->
-> Or, if the database and user already exist (steps 6.1–6.3), visit http://localhost/robinsnest/admin/setup.php to create just the tables from the browser.
-
-#### 6.1 — Create the database
+**Option C — Manual SQL:**
 
 ```sql
+-- 1. Create database
 CREATE DATABASE IF NOT EXISTS robinsnest
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-```
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-#### 6.2 — Create the database user and grant permissions
-
-```sql
-CREATE USER IF NOT EXISTS 'robinsnest'@'localhost'
-  IDENTIFIED BY 'password';
-
-GRANT ALL PRIVILEGES ON robinsnest.*
-  TO 'robinsnest'@'localhost';
-
+-- 2. Create user
+CREATE USER IF NOT EXISTS 'robinsnest'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON robinsnest.* TO 'robinsnest'@'localhost';
 FLUSH PRIVILEGES;
-```
 
-#### 6.3 — Select the database
-
-```sql
 USE robinsnest;
-```
 
-#### 6.4 — Create the `members` table (user accounts)
-
-```sql
+-- 3. Tables
 CREATE TABLE IF NOT EXISTS members (
-    user VARCHAR(16),
-    pass VARCHAR(255),
-    email VARCHAR(255),
-    INDEX(user(6))
+    user VARCHAR(16), pass VARCHAR(255), email VARCHAR(255), INDEX(user(6))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-```
 
-#### 6.5 — Create the `messages` table (public & private messages)
-
-```sql
 CREATE TABLE IF NOT EXISTS messages (
-    id      INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    auth    VARCHAR(16),
-    recip   VARCHAR(16),
-    pm      CHAR(1),
-    time    INT UNSIGNED,
-    message VARCHAR(4096),
-    image   VARCHAR(255),
-    audio   VARCHAR(255),
-    INDEX(auth(6)),
-    INDEX(recip(6))
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    auth VARCHAR(16), recip VARCHAR(16), pm CHAR(1),
+    time INT UNSIGNED, message VARCHAR(4096),
+    image VARCHAR(255), audio VARCHAR(255),
+    INDEX(auth(6)), INDEX(recip(6))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-```
 
-#### 6.6 — Create the `friends` table (follow relationships)
-
-```sql
 CREATE TABLE IF NOT EXISTS friends (
-    user    VARCHAR(16),
-    friend  VARCHAR(16),
-    INDEX(user(6)),
-    INDEX(friend(6))
+    user VARCHAR(16), friend VARCHAR(16),
+    INDEX(user(6)), INDEX(friend(6))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-```
 
-#### 6.7 — Create the `profiles` table (user bios)
-
-```sql
 CREATE TABLE IF NOT EXISTS profiles (
-    user VARCHAR(16),
-    text VARCHAR(4096),
-    INDEX(user(6))
+    user VARCHAR(16), text VARCHAR(4096), INDEX(user(6))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-```
 
-#### 6.8 — Create the `password_resets` table (reset tokens)
-
-```sql
 CREATE TABLE IF NOT EXISTS password_resets (
-    id      INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    user    VARCHAR(16),
-    token   VARCHAR(64),
-    expires INT UNSIGNED,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user VARCHAR(16), token VARCHAR(64), expires INT UNSIGNED,
     INDEX(token(12))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-> After running all queries you should see five tables in the `robinsnest` database: `members`, `messages`, `friends`, `profiles`, `password_resets`.
+---
 
-### 7. Configure Base URL (if not using default path)
+### Step 6 — Configure (if needed)
 
-If your project is NOT at `http://localhost/robinsnest/`, edit `config.php` and change the `BASE_URL` constant:
+**Database credentials** — open `includes/functions.php`:
 
 ```php
-define('BASE_URL', '/robinsnest');  // Change to match your path
+$db_host = 'localhost';
+$db_name = 'robinsnest';
+$db_user = 'robinsnest';   // MySQL username
+$db_pass = 'password';     // MySQL password
 ```
 
-For example, if you deploy to `http://localhost/messenger/`, set it to `'/messenger'`.
+**Base URL** — only needed if your project is NOT at `/robinsnest/`. Open `config.php`:
 
-### 8. Launch the App
+```php
+define('BASE_URL', '/robinsnest');  // change to match your path
+```
 
-Open your browser and go to:
+---
+
+### Step 7 — Open the App
 
 ```
 http://localhost/robinsnest/
@@ -242,7 +299,7 @@ http://localhost/robinsnest/
 
 Sign up for an account and start messaging!
 
-> **Tip:** To test messaging, open a second browser (or incognito window), sign up with a different username, and send messages between the two accounts.
+> **Tip:** To test the full messaging experience, open a second browser (or incognito window), sign up with a different username, and chat between the two accounts.
 
 ---
 
@@ -250,110 +307,138 @@ Sign up for an account and start messaging!
 
 ```
 robinsnest/
-├── config.php                       (Base path constants)
-├── index.php                        (Home / dashboard)
+│
+├── config.php                    ← Base URL + DB constants
+├── index.php                     ← Home / dashboard
+├── database.sql                  ← Full SQL setup script
 │
 ├── includes/
-│   ├── header.php                   (Shared header, tab bar, logout modal)
-│   └── functions.php                (Database connection & helper functions)
+│   ├── header.php                ← Shared nav, tab bar, logout modal
+│   └── functions.php             ← PDO connection + helper functions
 │
 ├── auth/
-│   ├── login.php                    (Login page)
-│   ├── signup.php                   (Registration with success dialog)
-│   ├── logout.php                   (Logout handler)
-│   ├── forgot_password.php          (Password reset request)
-│   └── reset_password.php           (Password reset form)
+│   ├── login.php                 ← Login with bcrypt verify
+│   ├── signup.php                ← Register + password strength popover
+│   ├── logout.php                ← Session destroy
+│   ├── forgot_password.php       ← Generate reset token
+│   └── reset_password.php        ← Token-validated password reset
 │
 ├── pages/
-│   ├── messages.php                 (Chat with image/voice/AJAX support)
-│   ├── members.php                  (Member list with follow/unfollow dialogs)
-│   ├── friends.php                  (Friends — mutual, followers, following)
-│   └── profile.php                  (Profile editor & image upload)
+│   ├── messages.php              ← Chat (AJAX, image, voice, public/private)
+│   ├── members.php               ← Member list with follow/unfollow
+│   ├── friends.php               ← Mutual · Followers · Following view
+│   └── profile.php               ← Edit bio, avatar, username
 │
 ├── ajax/
-│   └── checkuser.php                (AJAX username availability check)
+│   └── checkuser.php             ← Live username availability check
 │
 ├── admin/
-│   └── setup.php                    (Database setup & cleanup tools)
+│   └── setup.php                 ← DB setup, clean data, full reset
 │
-├── assets/
-│   └── css/
-│       └── styles.css               (Custom CSS — chat bubbles, tabs, cards)
+├── assets/css/
+│   └── styles.css                ← Chat bubbles, tabs, cards, strength meter
 │
-├── uploads/                         (Profile images — created in Step 4)
-│   └── messages/                    (Chat image & voice attachments)
+├── screenshots/                  ← UI mockups for README
 │
-├── database.sql                     (Full SQL setup script)
-├── .gitignore
-└── README.md
+└── uploads/                      ← Profile photos + message attachments
+    └── messages/
 ```
 
 ---
 
-## Architecture Diagrams
+## Architecture
 
 ### Database Schema
 
 ```mermaid
 erDiagram
     members {
-        VARCHAR16 user PK
+        VARCHAR16  user    PK
         VARCHAR255 pass
         VARCHAR255 email
     }
-
     messages {
-        INT id PK
-        VARCHAR16 auth FK
-        VARCHAR16 recip FK
-        CHAR1 pm
-        INT time
+        INT        id      PK
+        VARCHAR16  auth    FK
+        VARCHAR16  recip   FK
+        CHAR1      pm
+        INT        time
         VARCHAR4096 message
         VARCHAR255 image
         VARCHAR255 audio
     }
-
     friends {
-        VARCHAR16 user FK
-        VARCHAR16 friend FK
+        VARCHAR16  user    FK
+        VARCHAR16  friend  FK
     }
-
     profiles {
-        VARCHAR16 user FK
+        VARCHAR16   user   FK
         VARCHAR4096 text
     }
-
     password_resets {
-        INT id PK
-        VARCHAR16 user FK
-        VARCHAR64 token
-        INT expires
+        INT        id      PK
+        VARCHAR16  user    FK
+        VARCHAR64  token
+        INT        expires
     }
 
-    members ||--o{ messages : "sends (auth)"
-    members ||--o{ messages : "receives (recip)"
-    members ||--o{ friends : "follows (user)"
-    members ||--o{ friends : "followed by (friend)"
-    members ||--o| profiles : "has"
-    members ||--o{ password_resets : "requests"
+    members ||--o{ messages       : "sends / receives"
+    members ||--o{ friends        : "follows"
+    members ||--o| profiles       : "has"
+    members ||--o{ password_resets: "requests"
 ```
 
-### Page Navigation Map
+---
 
-How users navigate between pages:
+### System Architecture
 
 ```mermaid
 flowchart LR
-    Home["Home<br/>index.php"]
-    Login["Login<br/>auth/login.php"]
-    Signup["Signup<br/>auth/signup.php"]
-    Forgot["Forgot Password<br/>auth/forgot_password.php"]
-    Reset["Reset Password<br/>auth/reset_password.php"]
-    Messages["Messages<br/>pages/messages.php"]
-    Members["Members<br/>pages/members.php"]
-    Friends["Friends<br/>pages/friends.php"]
-    Profile["Profile<br/>pages/profile.php"]
-    Logout["Logout<br/>auth/logout.php"]
+    subgraph Browser
+        UI["Bootstrap 5 UI\n+ AJAX polling"]
+    end
+
+    subgraph XAMPP
+        Apache["Apache\nHTTP Server"]
+        PHP["PHP 8+\nPDO Layer"]
+        GD["GD Extension\nImage resize"]
+        MySQL[(MySQL\nMariaDB)]
+    end
+
+    subgraph Storage
+        FS["uploads/\nPhotos & Voice"]
+    end
+
+    UI -->|HTTP Request| Apache
+    Apache --> PHP
+    PHP -->|Prepared Statements| MySQL
+    PHP -->|move_uploaded_file| FS
+    PHP -->|imagecopyresampled| GD
+    GD --> FS
+    FS -->|Static files| Apache
+    Apache -->|HTML / JSON| UI
+
+    style Browser fill:#4f46e5,color:#fff,stroke:none
+    style XAMPP   fill:#f1f5f9,stroke:#e2e8f0
+    style Storage fill:#ecfdf5,stroke:#a7f3d0
+```
+
+---
+
+### Page Navigation Map
+
+```mermaid
+flowchart LR
+    Home["🏠 Home\nindex.php"]
+    Login["🔑 Login"]
+    Signup["✨ Sign Up"]
+    Forgot["🔓 Forgot Password"]
+    Reset["🔄 Reset Password"]
+    Messages["💬 Messages"]
+    Members["👥 Members"]
+    Friends["♥ Friends"]
+    Profile["👤 Profile"]
+    Logout["⇥ Logout"]
 
     Home <-->|tab| Messages
     Home <-->|tab| Members
@@ -361,26 +446,25 @@ flowchart LR
     Home <-->|tab| Profile
     Home -->|tab| Logout
 
-    Login <--> Signup
-    Login <--> Forgot
-    Forgot --> Reset
-    Login --> Home
+    Login  <--> Signup
+    Login  --> Forgot --> Reset
+    Login  --> Home
     Signup --> Home
     Logout --> Home
 
     Members --> Messages
     Friends --> Members
 
-    style Home fill:#4f46e5,color:#fff
-    style Messages fill:#7c3aed,color:#fff
-    style Members fill:#7c3aed,color:#fff
-    style Friends fill:#7c3aed,color:#fff
-    style Profile fill:#7c3aed,color:#fff
-    style Login fill:#059669,color:#fff
-    style Signup fill:#059669,color:#fff
-    style Logout fill:#ef4444,color:#fff
-    style Forgot fill:#d97706,color:#fff
-    style Reset fill:#d97706,color:#fff
+    style Home     fill:#4f46e5,color:#fff,stroke:none
+    style Messages fill:#7c3aed,color:#fff,stroke:none
+    style Members  fill:#7c3aed,color:#fff,stroke:none
+    style Friends  fill:#7c3aed,color:#fff,stroke:none
+    style Profile  fill:#7c3aed,color:#fff,stroke:none
+    style Login    fill:#059669,color:#fff,stroke:none
+    style Signup   fill:#059669,color:#fff,stroke:none
+    style Forgot   fill:#d97706,color:#fff,stroke:none
+    style Reset    fill:#d97706,color:#fff,stroke:none
+    style Logout   fill:#ef4444,color:#fff,stroke:none
 ```
 
 ---
@@ -388,49 +472,44 @@ flowchart LR
 ## How It Works
 
 ### Messaging
-- Messages display in chat bubble format — your messages on the right (purple), others on the left (white)
-- Private messages have a green tint with a lock icon
-- Image and voice attachments display inline in bubbles
-- The chat auto-refreshes every 3 seconds via AJAX (no page reload)
-- Sending a message via AJAX keeps your scroll position and form state
-- After sending from your own messages page, you are redirected to the recipient's conversation
+- Chat bubbles — your messages on the **right** (purple), others on the **left** (white)
+- Private messages have a **green tint** + lock icon
+- The chat window **auto-refreshes every 3 seconds** via AJAX — no page reload
+- Image and voice attachments render **inline** inside bubbles
+- After sending from your own page, you are **redirected** to the recipient's conversation
 
 ### Friend System
-- Follow any member from the Members page (shows a success dialog)
-- Unfollow triggers a Yes/No confirmation dialog before removing
-- Friends page shows three sections: Mutual Friends, Followers, Following
+- Follow any member from the **Members** page
+- Friends page shows **three sections**: Mutual Friends · Your Followers · You are Following
+- Mutual = both follow each other
+- Unfollow / Remove triggers a **Yes/No confirmation** modal
 
 ### Profiles
-- Upload a profile image (auto-resized to 200px max, saved as JPG in `uploads/`)
-- Write a bio displayed on your profile card
-- Profile photos appear on member lists, friend lists, header bar, and home dashboard
+- Upload a photo → auto-resized to **200px max**, saved as JPG
+- Write a bio shown on your profile card and message wall
+- **Rename username** — cascades across all tables in a single DB transaction
 
 ---
 
 ## Database Cleanup
 
-Visit http://localhost/robinsnest/admin/setup.php for cleanup buttons:
+Visit `http://localhost/robinsnest/admin/setup.php` for one-click cleanup:
 
-| Button | What it does |
-|--------|-------------|
-| **Clean Data** | Deletes messages, friends, profiles & resets (keeps member accounts) |
+| Button | Effect |
+|---|---|
+| **Clean Data** | Deletes messages, friends, profiles & resets — keeps accounts |
 | **Reset All** | Deletes everything including member accounts |
 
-Or run manually in MySQL:
+Or run in MySQL:
 
 ```sql
--- Clean data only (keep accounts)
-DELETE FROM messages;
-DELETE FROM friends;
-DELETE FROM profiles;
-DELETE FROM password_resets;
+-- Keep accounts, clear everything else
+DELETE FROM messages; DELETE FROM friends;
+DELETE FROM profiles; DELETE FROM password_resets;
 
--- Full reset (remove everything)
-DELETE FROM messages;
-DELETE FROM friends;
-DELETE FROM profiles;
-DELETE FROM password_resets;
-DELETE FROM members;
+-- Full wipe
+DELETE FROM messages; DELETE FROM friends;
+DELETE FROM profiles; DELETE FROM password_resets; DELETE FROM members;
 ```
 
 ---
@@ -438,24 +517,11 @@ DELETE FROM members;
 ## Troubleshooting
 
 | Problem | Solution |
-|---------|----------|
-| **"Call to undefined function imagecreatefromjpeg()"** | Enable the GD extension (see Step 2) |
-| **Login says "Invalid password" after setup** | Visit `admin/setup.php` to upgrade the `pass` column to VARCHAR(255) for bcrypt |
-| **Profile images not showing** | Make sure the `uploads/` folder exists and is writable |
-| **Voice recording not working** | Use HTTPS or localhost (microphone requires secure context). Allow mic permission in browser. |
-| **CSS not updating after changes** | Hard refresh with Ctrl+Shift+R (CSS is cache-busted automatically via `?v=` timestamp) |
-| **Database connection error** | Verify credentials in `includes/functions.php` match your MySQL user (see Step 5) |
-| **Links broken after moving to different path** | Update `BASE_URL` in `config.php` to match your deployment path (see Step 7) |
-
----
-
-## Tech Stack
-
-| Layer     | Technology                                          |
-|-----------|-----------------------------------------------------|
-| Backend   | PHP 8+ with PDO (prepared statements)               |
-| Database  | MySQL / MariaDB (utf8mb4)                           |
-| Frontend  | Bootstrap 5.3.3, Bootstrap Icons 1.11.3             |
-| Security  | bcrypt hashing, prepared statements, XSS protection |
-| Real-time | AJAX polling (3s interval), FormData API            |
-| Media     | Browser MediaRecorder API (voice), PHP GD (images)  |
+|---|---|
+| `imagecreatefromjpeg()` undefined | Enable the GD extension — see Step 2 |
+| "Invalid password" after fresh setup | Visit `admin/setup.php` to upgrade the `pass` column to VARCHAR(255) |
+| Profile images not showing | Ensure `uploads/` exists and Apache has write permission |
+| Voice recording not working | Use **HTTPS or localhost** — microphone requires a secure context |
+| CSS not updating | Hard-refresh with `Ctrl+Shift+R` — styles are cache-busted automatically |
+| Database connection error | Check credentials in `includes/functions.php` match your MySQL user |
+| Broken links after moving | Update `BASE_URL` in `config.php` to match your new path |
