@@ -230,8 +230,10 @@ if ($shown > 0):
                 </button>
 <?php endif; ?>
 <?php if ($isMine || $row['recip'] === $user): ?>
-                <a href="<?= BASE_URL ?>/pages/messages.php?view=<?= urlencode($view) ?>&erase=<?= (int)$row['id'] ?>&r=<?= $randstr ?>"
-                   class="bubble-delete" title="Delete"><i class="bi bi-trash"></i></a>
+                <button type="button" class="bubble-delete" title="Delete"
+                        onclick="openDeleteModal(<?= (int)$row['id'] ?>)">
+                    <i class="bi bi-trash"></i>
+                </button>
 <?php endif; ?>
             </div>
         </div>
@@ -270,6 +272,27 @@ if ($shown === 0):
                 <button type="button" class="btn btn-primary btn-sm" onclick="saveEdit()">
                     <i class="bi bi-check2 me-1"></i>Save
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Message Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-body text-center p-4">
+                <div style="width:64px;height:64px;border-radius:50%;background:#fee2e2;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1rem">
+                    <i class="bi bi-trash-fill" style="font-size:1.75rem;color:#dc2626"></i>
+                </div>
+                <h5 class="fw-bold mb-1">Delete Message?</h5>
+                <p class="text-muted small mb-4">This cannot be undone.</p>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary flex-fill py-2" data-bs-dismiss="modal">Cancel</button>
+                    <a id="deleteConfirmBtn" href="#" class="btn btn-danger flex-fill py-2">
+                        <i class="bi bi-trash me-1"></i>Delete
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -377,6 +400,14 @@ if ($shown === 0):
             }).catch(function(){
                 alert('Microphone access denied. Please allow microphone permission.');
             });
+        };
+
+        var deleteModal = null;
+        window.openDeleteModal = function(id) {
+            var url = baseUrl + '/pages/messages.php?view=<?= urlencode($view) ?>&erase=' + id + '&r=<?= $randstr ?>';
+            document.getElementById('deleteConfirmBtn').href = url;
+            if (!deleteModal) deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
         };
 
         var editMsgId = null;
