@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS messages (
     message VARCHAR(4096),
     image   VARCHAR(255),
     audio   VARCHAR(255),
+    edited  TINYINT(1) NOT NULL DEFAULT 0,
     INDEX(auth(6)),
     INDEX(recip(6))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
