@@ -16,42 +16,42 @@
 ## Screenshots
 
 <p align="center">
-  <img src="screenshots/Home.png" width="900" alt="Home Dashboard"/>
+  <img src="screenshots/Home.png" width="1200" alt="Home Dashboard"/>
   <br/><sub><b>Home</b> — Recent public &amp; private message feed, clickable to open the conversation</sub>
 </p>
 
 <p align="center">
-  <img src="screenshots/Messages.png" width="900" alt="Chat"/>
+  <img src="screenshots/Messages.png" width="1200" alt="Chat"/>
   <br/><sub><b>Chat</b> — Purple (sent) · White (received) · Green (private) bubbles with timestamps, voice &amp; image support</sub>
 </p>
 
 <p align="center">
-  <img src="screenshots/members.png" width="900" alt="Members"/>
+  <img src="screenshots/members.png" width="1200" alt="Members"/>
   <br/><sub><b>Members</b> — Browse all users with gender-aware avatars, follow/unfollow with Mutual · Following · Follows You badges</sub>
 </p>
 
 <p align="center">
-  <img src="screenshots/Friends.png" width="900" alt="Friends"/>
+  <img src="screenshots/Friends.png" width="1200" alt="Friends"/>
   <br/><sub><b>Friends</b> — Three sections: Mutual Friends · Your Followers · You are Following</sub>
 </p>
 
 <p align="center">
-  <img src="screenshots/Profile.png" width="900" alt="Profile"/>
+  <img src="screenshots/Profile.png" width="1200" alt="Profile"/>
   <br/><sub><b>Profile</b> — Upload avatar (auto-resized, GIF/JPEG/PNG/WebP), write a bio, rename username (cascades across all tables)</sub>
 </p>
 
 <p align="center">
-  <img src="screenshots/Login.png" width="900" alt="Login"/>
+  <img src="screenshots/Login.png" width="1200" alt="Login"/>
   <br/><sub><b>Login</b> — Clean auth card with bcrypt-verified credentials and forgot-password flow</sub>
 </p>
 
 <p align="center">
-  <img src="screenshots/Signup.png" width="900" alt="Sign Up"/>
+  <img src="screenshots/Signup.png" width="1200" alt="Sign Up"/>
   <br/><sub><b>Sign Up</b> — Live username check, animated password strength popover &amp; gender selection with card-style radio buttons</sub>
 </p>
 
 <p align="center">
-  <img src="screenshots/Welcome.png" width="900" alt="Welcome Modal"/>
+  <img src="screenshots/Welcome.png" width="1200" alt="Welcome Modal"/>
   <br/><sub><b>Welcome Modal</b> — Confetti, glowing check ring &amp; gradient card shown on first signup</sub>
 </p>
 
