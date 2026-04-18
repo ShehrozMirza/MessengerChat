@@ -15,48 +15,45 @@
 
 ## Screenshots
 
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <img src="screenshots/home.svg" width="100%" alt="Home Dashboard"/>
-      <br/><sub><b>🏠 Home Dashboard</b> — Recent public &amp; private message feeds with profile sidebar</sub>
-    </td>
-    <td align="center" width="50%">
-      <img src="screenshots/chat.svg" width="100%" alt="Chat"/>
-      <br/><sub><b>💬 Chat</b> — Real-time bubbles (purple sent · white received · green private), voice &amp; image</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="screenshots/members.svg" width="100%" alt="Members"/>
-      <br/><sub><b>👥 Members</b> — Browse all users, follow/unfollow with Mutual · Following · Follows You badges</sub>
-    </td>
-    <td align="center" width="50%">
-      <img src="screenshots/friends.svg" width="100%" alt="Friends"/>
-      <br/><sub><b>♥ Friends</b> — Three sections: Mutual Friends · Your Followers · You are Following</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="screenshots/profile.svg" width="100%" alt="Profile"/>
-      <br/><sub><b>👤 Profile</b> — Edit username, bio and upload a profile photo with live preview</sub>
-    </td>
-    <td align="center" width="50%">
-      <img src="screenshots/login.svg" width="100%" alt="Login"/>
-      <br/><sub><b>🔑 Login</b> — Clean auth card with bcrypt-verified credentials</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="screenshots/signup.svg" width="100%" alt="Sign Up"/>
-      <br/><sub><b>✨ Sign Up</b> — Live username check &amp; animated password-strength popover with 5-point checklist</sub>
-    </td>
-    <td align="center" width="50%">
-      <img src="screenshots/welcome.svg" width="100%" alt="Welcome Modal"/>
-      <br/><sub><b>&#127881; Welcome Modal</b> — Animated confetti, glowing check ring &amp; gradient card on first signup</sub>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="screenshots/home.svg" width="900" alt="Home Dashboard"/>
+  <br/><sub><b>Home Dashboard</b> — Recent public &amp; private message feeds with profile sidebar</sub>
+</p>
+
+<p align="center">
+  <img src="screenshots/chat.svg" width="900" alt="Chat"/>
+  <br/><sub><b>Chat</b> — Real-time bubbles (purple sent · white received · green private), voice &amp; image</sub>
+</p>
+
+<p align="center">
+  <img src="screenshots/members.svg" width="900" alt="Members"/>
+  <br/><sub><b>Members</b> — Browse all users, follow/unfollow with Mutual · Following · Follows You badges</sub>
+</p>
+
+<p align="center">
+  <img src="screenshots/friends.svg" width="900" alt="Friends"/>
+  <br/><sub><b>Friends</b> — Three sections: Mutual Friends · Your Followers · You are Following</sub>
+</p>
+
+<p align="center">
+  <img src="screenshots/profile.svg" width="900" alt="Profile"/>
+  <br/><sub><b>Profile</b> — Edit username, bio and upload a profile photo with live preview</sub>
+</p>
+
+<p align="center">
+  <img src="screenshots/login.svg" width="900" alt="Login"/>
+  <br/><sub><b>Login</b> — Clean auth card with bcrypt-verified credentials</sub>
+</p>
+
+<p align="center">
+  <img src="screenshots/signup.svg" width="900" alt="Sign Up"/>
+  <br/><sub><b>Sign Up</b> — Live username check &amp; animated password-strength popover with 5-point checklist</sub>
+</p>
+
+<p align="center">
+  <img src="screenshots/welcome.svg" width="900" alt="Welcome Modal"/>
+  <br/><sub><b>Welcome Modal</b> — Animated confetti, glowing check ring &amp; gradient card on first signup</sub>
+</p>
 
 ---
 
