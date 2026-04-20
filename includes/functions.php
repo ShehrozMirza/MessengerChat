@@ -1,8 +1,8 @@
 <?php
 $db_host = 'localhost';
 $db_name = 'robinsnest';
-$db_user = 'robinsnest';
-$db_pass = 'password';
+$db_user = 'root';
+$db_pass = '';
 $db_chrs = 'utf8mb4';
 $attr = "mysql:host=$db_host;dbname=$db_name;charset=$db_chrs";
 $opts =
@@ -51,7 +51,7 @@ function showProfile($user)
 {
     global $pdo;
     if (file_exists(ROOT_DIR . "/uploads/$user.jpg")) {
-        $imgSrc = BASE_URL . "/uploads/" . rawurlencode($user) . ".jpg";
+        $imgSrc = BASE_URL . "/uploads/" . rawurlencode($user) . ".jpg?v=" . filemtime(ROOT_DIR . "/uploads/$user.jpg");
     } else {
         $gstmt = $pdo->prepare("SELECT gender FROM members WHERE user=?");
         $gstmt->execute([$user]);
